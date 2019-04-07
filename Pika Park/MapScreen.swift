@@ -19,6 +19,10 @@ class MapScreen: UIViewController {
     let regionMeters: Double = 10000
     var previousLocation: CLLocation?
     
+    // let geoCoder = CLGeocoder() duplicate code below
+    // 13.1
+    var directionsArray: [MKDirections] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // 5.
@@ -99,12 +103,16 @@ class MapScreen: UIViewController {
         let request = createDirectionsRequest(from: location)
         // 12.3
         let directions = MKDirections(request: request)
+        // 13.3
+        resetMapView(withNew: directions)
+        
         //12.4
         directions.calculate { [unowned self] (response, error) in
             //TODO: handel error if needed
             guard let response = response else { return } // TODO: show response not available in alert
             
             for route in response.routes {
+                let setps = route.steps // tableView for displaying the direction steps, extend beyond the tutorial
                 self.mapView.addOverlay(route.polyline)
                 self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true) // resize the view of the map to fit the route
             }
@@ -125,6 +133,14 @@ class MapScreen: UIViewController {
         return request
     }
     
+    // 13.2
+    func resetMapView(withNew directions: MKDirections) {
+        mapView.removeOverlays(mapView.overlays)
+        directionsArray.append(directions)
+        let _ = directionsArray.map{ $0.cancel() }
+        directionsArray.removeAll()
+    }
+
     
     @IBAction func goButtonTapped(_ sender: UIButton) {
         getDirections()
@@ -164,6 +180,7 @@ extension MapScreen: MKMapViewDelegate {
         guard center.distance(from: previousLocation) > 50 else { return }
         self.previousLocation = center
         
+        // 12.6
         geoCoder.cancelGeocode() // clean up the geocodes for performance
         
         // 10.2 guards are for unrelated error handling
