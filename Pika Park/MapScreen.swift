@@ -13,6 +13,7 @@ import CoreLocation
 class MapScreen: UIViewController {
 
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var adressLabel: UILabel!
     
     let locationManager = CLLocationManager()
     let regionMeters: Double = 10000
