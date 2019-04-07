@@ -15,6 +15,7 @@ class MapScreen: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     
     let locationManager = CLLocationManager()
+    let regionMeters: Double = 10000
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +29,16 @@ class MapScreen: UIViewController {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
     }
+    
+    //7.
+    func centerViewOnUserLocation() {
+        if let location = locationManager.location?.coordinate {
+            let region = MKCoordinateRegion.init(center: location, latitudinalMeters: regionMeters, longitudinalMeters: regionMeters)
+            mapView.setRegion(region, animated: true)
+        }
+    }
+    
+    
     
     // 2.
     func checkLocationServices() {
@@ -45,6 +56,9 @@ class MapScreen: UIViewController {
         switch CLLocationManager.authorizationStatus() {
         case .authorizedWhenInUse:
             // Do Map Stuff
+            // 6.
+            mapView.showsUserLocation = true
+            centerViewOnUserLocation()
             break
         case .denied:
             // show alert instructing them how to turn on permission
