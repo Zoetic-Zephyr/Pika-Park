@@ -53,12 +53,13 @@ class MapScreen: UIViewController {
     
     // 4.
     func checkLocationAuthorization() {
-        switch CLLocationManager.authorizationStatus() {
+        switch CLLocationManager.authorizationStatus() { // device-level location permissions
         case .authorizedWhenInUse:
             // Do Map Stuff
             // 6.
             mapView.showsUserLocation = true
             centerViewOnUserLocation()
+            locationManager.startUpdatingLocation()
             break
         case .denied:
             // show alert instructing them how to turn on permission
@@ -82,10 +83,15 @@ class MapScreen: UIViewController {
 extension MapScreen: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         // We'll be back
+        guard let location = locations.last else { return } // guard
+        let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        let region = MKCoordinateRegion.init(center: center, latitudinalMeters: regionMeters, longitudinalMeters: regionMeters)
+        mapView.setRegion(region, animated: true)
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         // We'll be back
+        checkLocationAuthorization()
     }
 }
 
