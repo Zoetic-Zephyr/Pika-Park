@@ -89,6 +89,46 @@ class MapScreen: UIViewController {
         
         return CLLocation(latitude: latitude, longitude: longitude)
     }
+    
+    func getDirections() {
+        guard let location = locationManager.location?.coordinate else {
+            //TODO: inform user we don't have their current location
+            return
+        }
+        // 12.1
+        let request = createDirectionsRequest(from: location)
+        // 12.3
+        let directions = MKDirections(request: request)
+        //12.4
+        directions.calculate { [unowned self] (response, error) in
+            //TODO: handel error if needed
+            guard let response = response else { return } // TODO: show response not available in alert
+            
+            for route in response.routes {
+                self.mapView.addOverlay(route.polyline)
+                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true) // resize the view of the map to fit the route
+            }
+        }
+    }
+    // 12.2
+    func createDirectionsRequest(from coordinate: CLLocationCoordinate2D) -> MKDirections.Request {
+        let destinationCoordinate       = getCenterLocation(for: mapView).coordinate
+        let startingLocation            = MKPlacemark(coordinate: coordinate)
+        let destination                 = MKPlacemark(coordinate: destinationCoordinate)
+        
+        let request                     = MKDirections.Request()
+        request.source                  = MKMapItem(placemark: startingLocation)
+        request.destination             = MKMapItem(placemark: destination)
+        request.transportType           = .automobile // automobile by default, can let user select
+        request.requestsAlternateRoutes = true
+        
+        return request
+    }
+    
+    
+    @IBAction func goButtonTapped(_ sender: UIButton) {
+        getDirections()
+    }
 }
 
 // 1.
@@ -116,13 +156,15 @@ extension MapScreen: MKMapViewDelegate {
         // 10.1
         let geoCoder = CLGeocoder()
         
-        // 13.
+        // 11.5
         guard let previousLocation = self.previousLocation else { return }
         
         
         // 11.1
         guard center.distance(from: previousLocation) > 50 else { return }
         self.previousLocation = center
+        
+        geoCoder.cancelGeocode() // clean up the geocodes for performance
         
         // 10.2 guards are for unrelated error handling
         geoCoder.reverseGeocodeLocation(center) {[weak self] (placemarks, error) in
@@ -142,10 +184,18 @@ extension MapScreen: MKMapViewDelegate {
             let streetNumber = placemark.subThoroughfare ?? "" // nil coalescing
             let streetName = placemark.thoroughfare ?? "" // nil coalescing
             
-            // 12. Closure, Async, main thread blah blah...
+            // 11.4 Closure, Async, main thread blah blah...
             DispatchQueue.main.async {
                 self.adressLabel.text = "\(streetNumber) \(streetName)"
             }
         }
+    }
+    
+    // 12.5
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        let renderer = MKPolylineRenderer(overlay: overlay as! MKPolyline)
+        renderer.strokeColor = .lightGray
+        
+        return renderer
     }
 }
