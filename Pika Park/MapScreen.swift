@@ -14,9 +14,12 @@ class MapScreen: UIViewController {
 
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var adressLabel: UILabel!
+    @IBOutlet weak var goButton: UIButton!
+    @IBOutlet weak var centerButton: UIButton!
+    
     
     let locationManager = CLLocationManager()
-    let regionMeters: Double = 10000
+    let regionMeters: Double = 1000
     var previousLocation: CLLocation?
     
     // let geoCoder = CLGeocoder() duplicate code below
@@ -27,6 +30,7 @@ class MapScreen: UIViewController {
         super.viewDidLoad()
         // 5.
         checkLocationServices()
+        viewStyling()
     }
     
     
@@ -112,9 +116,10 @@ class MapScreen: UIViewController {
             guard let response = response else { return } // TODO: show response not available in alert
             
             for route in response.routes {
-                let setps = route.steps // tableView for displaying the direction steps, extend beyond the tutorial
+                let steps = route.steps // tableView for displaying the direction steps, extend beyond the tutorial
                 self.mapView.addOverlay(route.polyline)
                 self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true) // resize the view of the map to fit the route
+                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, edgePadding: UIEdgeInsets(top: 50.0, left: 50.0, bottom: 50.0, right: 50.0), animated: true)
             }
         }
     }
@@ -128,7 +133,7 @@ class MapScreen: UIViewController {
         request.source                  = MKMapItem(placemark: startingLocation)
         request.destination             = MKMapItem(placemark: destination)
         request.transportType           = .automobile // automobile by default, can let user select
-        request.requestsAlternateRoutes = true
+        request.requestsAlternateRoutes = false
         
         return request
     }
@@ -140,11 +145,23 @@ class MapScreen: UIViewController {
         let _ = directionsArray.map{ $0.cancel() }
         directionsArray.removeAll()
     }
+    
+    func viewStyling() {
+        goButton.layer.cornerRadius = 5
+        adressLabel.layer.masksToBounds = true
+        adressLabel.layer.cornerRadius = 10
+    }
 
     
     @IBAction func goButtonTapped(_ sender: UIButton) {
         getDirections()
     }
+    
+    @IBAction func centerButtonTapped(_ sender: UIButton) {
+        mapView.removeOverlays(mapView.overlays)
+        centerViewOnUserLocation()
+    }
+    
 }
 
 // 1.
@@ -211,7 +228,8 @@ extension MapScreen: MKMapViewDelegate {
     // 12.5
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay as! MKPolyline)
-        renderer.strokeColor = .lightGray
+        renderer.strokeColor = UIColor(red: 0.4352941176, green: 0.5529411765, blue: 0.9882352941, alpha: 1.0)
+        renderer.lineWidth = 2.0
         
         return renderer
     }
