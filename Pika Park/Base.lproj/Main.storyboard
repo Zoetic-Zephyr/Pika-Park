@@ -31,7 +31,7 @@
                                     <constraint firstAttribute="width" constant="40" id="7eX-Hk-1pz"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mwB-O9-IW1">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pinned Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mwB-O9-IW1">
                                 <rect key="frame" x="16" y="700" width="343" height="52"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -82,6 +82,7 @@
                         <outlet property="centerButton" destination="5WO-23-1eY" id="HMh-zL-ERp"/>
                         <outlet property="goButton" destination="DgV-ZT-6JK" id="G87-7H-caT"/>
                         <outlet property="mapView" destination="WA9-hD-qqD" id="1uo-4k-diD"/>
+                        <outlet property="pinImg" destination="Mqe-iy-8cE" id="wNG-Pj-y4F"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

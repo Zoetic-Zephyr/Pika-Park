@@ -16,6 +16,8 @@ class MapScreen: UIViewController {
     @IBOutlet weak var adressLabel: UILabel!
     @IBOutlet weak var goButton: UIButton!
     @IBOutlet weak var centerButton: UIButton!
+    @IBOutlet weak var pinImg: UIImageView!
+    
     
     
     let locationManager = CLLocationManager()
@@ -110,6 +112,8 @@ class MapScreen: UIViewController {
         // 13.3
         resetMapView(withNew: directions)
         
+        addDestinationAnnotation() // to add a pin on map at selected destination
+        
         //12.4
         directions.calculate { [unowned self] (response, error) in
             //TODO: handel error if needed
@@ -152,14 +156,26 @@ class MapScreen: UIViewController {
         adressLabel.layer.cornerRadius = 10
     }
 
+    func addDestinationAnnotation() {
+        let destinationAnnotation = MKPointAnnotation()
+        destinationAnnotation.subtitle = "Your Destination"
+        destinationAnnotation.coordinate = getCenterLocation(for: mapView).coordinate
+        mapView.addAnnotation(destinationAnnotation)
+    }
+    
     
     @IBAction func goButtonTapped(_ sender: UIButton) {
+        pinImg.alpha = 0.0 //can also animate pin to drop down to map
+        adressLabel.alpha = 0.0
         getDirections()
     }
     
     @IBAction func centerButtonTapped(_ sender: UIButton) {
         mapView.removeOverlays(mapView.overlays)
+        mapView.removeAnnotations(mapView.annotations)
         centerViewOnUserLocation()
+        pinImg.alpha = 1.0
+        adressLabel.alpha = 1.0
     }
     
 }
@@ -194,7 +210,7 @@ extension MapScreen: MKMapViewDelegate {
         
         
         // 11.1
-        guard center.distance(from: previousLocation) > 50 else { return }
+        guard center.distance(from: previousLocation) > 10 else { return }
         self.previousLocation = center
         
         // 12.6
