@@ -164,7 +164,62 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         destinationAnnotation.coordinate = getCenterLocation(for: mapView).coordinate
         mapView.addAnnotation(destinationAnnotation)
     }
-    
+    // resond to user tap "search" button
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        // Ignore user
+        UIApplication.shared.beginIgnoringInteractionEvents()
+        
+        // Activity Indicator
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.style = UIActivityIndicatorView.Style.gray
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.startAnimating()
+        self.view.addSubview(activityIndicator)
+        
+        // Hide Keyboard
+        searchBar.resignFirstResponder()
+        // Hide SearchBar
+        dismiss(animated: true, completion: nil)
+        
+        pinImg.alpha = 0.0
+        
+        // Create the Search Request
+        let searchRequest = MKLocalSearch.Request()
+        searchRequest.naturalLanguageQuery = searchBar.text
+        // Start the search
+        let activeSearch = MKLocalSearch(request: searchRequest)
+        
+        activeSearch.start { (response, error) in
+            
+            activityIndicator.stopAnimating()
+            UIApplication.shared.endIgnoringInteractionEvents()
+            
+            if response == nil {
+                print("Error")
+            } else {
+                // Remove Annotations
+                self.mapView.removeAnnotations(self.mapView.annotations)
+                
+                // Get data
+                let latitude = response?.boundingRegion.center.latitude
+                let longitude = response?.boundingRegion.center.longitude
+                
+                // Create anootation
+                let annotation = MKPointAnnotation()
+                annotation.title = searchBar.text
+                annotation.coordinate = CLLocationCoordinate2DMake(latitude!, longitude!)
+                self.mapView.addAnnotation(annotation)
+                
+                // Zoom in annotation
+                let coordinate: CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude!, longitude!)
+                let span = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+                let region = MKCoordinateRegion(center: coordinate, span: span)
+                self.mapView.setRegion(region, animated: true)
+            }
+            
+        }
+    }
     
     @IBAction func goButtonTapped(_ sender: UIButton) {
         pinImg.alpha = 0.0 //can also animate pin to drop down to map
@@ -189,6 +244,12 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         let mapItem = MKMapItem(placemark: placemark)
         mapItem.name = "Your Destination"
         mapItem.openInMaps(launchOptions: options)
+    }
+    
+    @IBAction func searchButtonTapped(_ sender: UIButton) {
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchBar.delegate = self
+        present(searchController, animated: true, completion: nil)
     }
     
 }

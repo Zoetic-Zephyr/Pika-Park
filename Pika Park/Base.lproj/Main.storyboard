@@ -78,6 +78,18 @@
                                     <action selector="navigateButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Y0D-OD-jFa"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yWl-kX-EtN">
+                                <rect key="frame" x="262" y="44" width="97" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.35294117650000001" green="0.74117647060000003" blue="0.98823529409999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
+                                <state key="normal" title="Search">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="searchButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pV8-yE-k7u"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -97,6 +109,7 @@
                         <outlet property="mapView" destination="WA9-hD-qqD" id="1uo-4k-diD"/>
                         <outlet property="navigateButton" destination="BWD-ZS-bNG" id="0xj-6j-Qte"/>
                         <outlet property="pinImg" destination="Mqe-iy-8cE" id="wNG-Pj-y4F"/>
+                        <outlet property="searchButton" destination="yWl-kX-EtN" id="X1z-2L-1kK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
