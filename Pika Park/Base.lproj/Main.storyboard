@@ -40,12 +40,12 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DgV-ZT-6JK">
-                                <rect key="frame" x="303" y="50" width="50" height="50"/>
+                                <rect key="frame" x="253" y="629" width="116" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.3529411764705882" green="0.74117647058823533" blue="0.9882352941176471" alpha="1" colorSpace="calibratedRGB"/>
                                 <rect key="contentStretch" x="0.0" y="0.0" width="0.90000000000000002" height="1"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
-                                <state key="normal" title="GO">
+                                <state key="normal" title="Find Parking">
                                     <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
@@ -53,7 +53,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5WO-23-1eY">
-                                <rect key="frame" x="16" y="49" width="97" height="50"/>
+                                <rect key="frame" x="16" y="629" width="97" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.35294117650000001" green="0.74117647060000003" blue="0.98823529409999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <rect key="contentStretch" x="0.0" y="0.0" width="0.90000000000000002" height="1"/>
@@ -63,6 +63,19 @@
                                 </state>
                                 <connections>
                                     <action selector="centerButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="k8f-n5-Z2S"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BWD-ZS-bNG">
+                                <rect key="frame" x="139" y="628" width="97" height="52"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.35294117650000001" green="0.74117647060000003" blue="0.98823529409999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <rect key="contentStretch" x="0.0" y="0.0" width="0.90000000000000002" height="1"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
+                                <state key="normal" title="NAVI">
+                                    <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="navigateButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Y0D-OD-jFa"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -82,6 +95,7 @@
                         <outlet property="centerButton" destination="5WO-23-1eY" id="HMh-zL-ERp"/>
                         <outlet property="goButton" destination="DgV-ZT-6JK" id="G87-7H-caT"/>
                         <outlet property="mapView" destination="WA9-hD-qqD" id="1uo-4k-diD"/>
+                        <outlet property="navigateButton" destination="BWD-ZS-bNG" id="0xj-6j-Qte"/>
                         <outlet property="pinImg" destination="Mqe-iy-8cE" id="wNG-Pj-y4F"/>
                     </connections>
                 </viewController>

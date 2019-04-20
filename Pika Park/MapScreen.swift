@@ -10,13 +10,15 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class MapScreen: UIViewController {
+class MapScreen: UIViewController, UISearchBarDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var adressLabel: UILabel!
     @IBOutlet weak var goButton: UIButton!
     @IBOutlet weak var centerButton: UIButton!
     @IBOutlet weak var pinImg: UIImageView!
+    @IBOutlet weak var navigateButton: UIButton!
+    @IBOutlet weak var searchButton: UIButton!
     
     
     
@@ -176,6 +178,17 @@ class MapScreen: UIViewController {
         centerViewOnUserLocation()
         pinImg.alpha = 1.0
         adressLabel.alpha = 1.0
+    }
+    @IBAction func navigateButtonTapped(_ sender: UIButton) {
+        let destinationCoordinate = getCenterLocation(for: mapView).coordinate // this should not be the current center location!
+        let regionDistance: CLLocationDistance = 1000
+        let regionSpan = MKCoordinateRegion(center: destinationCoordinate, latitudinalMeters: regionDistance, longitudinalMeters: regionDistance)
+        
+        let options = [MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center), MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)]
+        let placemark = MKPlacemark(coordinate: destinationCoordinate)
+        let mapItem = MKMapItem(placemark: placemark)
+        mapItem.name = "Your Destination"
+        mapItem.openInMaps(launchOptions: options)
     }
     
 }
