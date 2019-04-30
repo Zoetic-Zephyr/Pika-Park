@@ -1,0 +1,4 @@
+module CNIOOpenSSL {
+    umbrella "/Users/quinn/Desktop/New York/IOS/final/PikaPark/pikaServer/.build/checkouts/swift-nio-ssl/Sources/CNIOOpenSSL/include"
+    export *
+}
