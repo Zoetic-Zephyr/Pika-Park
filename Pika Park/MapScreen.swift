@@ -21,7 +21,8 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var preferenceButton: UIButton!
     
-    
+    var parkingCoordinates: String = ""
+    var waiting: Int = 1
     
     let locationManager = CLLocationManager()
     let regionMeters: Double = 1000
@@ -239,9 +240,43 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         }
     }
     
+    func fetchParkingData(destinationX: Double, destinationY: Double, price: Int, eDistance: Double) {
+        let url = URL(string: "http://localhost:8080/\(destinationX)/\(destinationY)/\(price)/\(eDistance)")!
+        
+        URLSession.shared.dataTask(with: url) { data, response, error
+            in
+            guard let data = data else {
+                print(error?.localizedDescription ?? "Unknown error")
+                return
+            }
+            let results = String(data: data, encoding: String.Encoding.utf8) ?? "Unable to parse JSON response.\n"
+            self.parkingCoordinates = results
+            self.waiting = 0
+            }.resume()
+    }
+    
     @IBAction func goButtonTapped(_ sender: UIButton) {
         pinImg.alpha = 0.0 //can also animate pin to drop down to map
         adressLabel.alpha = 0.0
+        
+        //change to user input later
+        let destinationX = 40.7570120489
+        let destinationY = -73.9851702027
+        let price = 10
+        let eDistance = 0.8
+        
+        fetchParkingData(destinationX: destinationX, destinationY: destinationY, price: price, eDistance: eDistance)
+        
+        //A function check whether we get response
+        while waiting == 1 {
+            print("Waiting...")
+        }
+        
+        waiting = 1
+        print("Check it out! I've got \(self.parkingCoordinates)")
+        /*
+        change data type from String to whatever you need
+        */
         getDirections()
     }
     
