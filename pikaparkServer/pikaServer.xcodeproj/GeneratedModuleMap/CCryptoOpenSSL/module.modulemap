@@ -1,4 +1,0 @@
-module CCryptoOpenSSL {
-    umbrella "/Users/quinn/Desktop/New York/IOS/final/PikaPark/pikaServer/.build/checkouts/crypto/Sources/CCryptoOpenSSL/include"
-    export *
-}
