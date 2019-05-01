@@ -22,6 +22,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     @IBOutlet weak var preferenceButton: UIButton!
     
     var parkingCoordinates: String = ""
+    var waiting: Int = 1
     
     let locationManager = CLLocationManager()
     let regionMeters: Double = 1000
@@ -240,7 +241,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     }
     
     func fetchParkingData(destinationX: Double, destinationY: Double, price: Int, eDistance: Double) {
-        let url = URL(string: "http://localhost:8080/spots/\(destinationX)/\(destinationY)/\(price)/\(eDistance)")!
+        let url = URL(string: "http://localhost:8080/\(destinationX)/\(destinationY)/\(price)/\(eDistance)")!
         
         URLSession.shared.dataTask(with: url) { data, response, error
             in
@@ -248,18 +249,9 @@ class MapScreen: UIViewController, UISearchBarDelegate {
                 print(error?.localizedDescription ?? "Unknown error")
                 return
             }
-            
-            let decoder = JSONDecoder()
-            
-            if let parkCoord = try? decoder.decode(String.self, from: data) {
-                DispatchQueue.main.async{
-                    self.parkingCoordinates = parkCoord
-//                    self.tableView.reloadData()
-                    print("My assigned spot is \(parkCoord).")
-                }
-            }else{
-                print("Unable to parse JSON response.")
-            }
+            let results = String(data: data, encoding: String.Encoding.utf8) ?? "Unable to parse JSON response.\n"
+            self.parkingCoordinates = results
+            self.waiting = 0
             }.resume()
     }
     
@@ -274,6 +266,13 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         let eDistance = 0.8
         
         fetchParkingData(destinationX: destinationX, destinationY: destinationY, price: price, eDistance: eDistance)
+        
+        //A function check whether we get response
+        while waiting == 1 {
+            print("Waiting...")
+        }
+        
+        waiting = 1
         print("Check it out! I've got \(self.parkingCoordinates)")
         /*
         change data type from String to whatever you need
