@@ -21,7 +21,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var preferenceButton: UIButton!
     
-    
+    var parkingCoordinates: String = ""
     
     let locationManager = CLLocationManager()
     let regionMeters: Double = 1000
@@ -239,9 +239,45 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         }
     }
     
+    func fetchParkingData(destinationX: Double, destinationY: Double, price: Int, eDistance: Double) {
+        let url = URL(string: "http://localhost:8080/spots/\(destinationX)/\(destinationY)/\(price)/\(eDistance)")!
+        
+        URLSession.shared.dataTask(with: url) { data, response, error
+            in
+            guard let data = data else {
+                print(error?.localizedDescription ?? "Unknown error")
+                return
+            }
+            
+            let decoder = JSONDecoder()
+            
+            if let parkCoord = try? decoder.decode(String.self, from: data) {
+                DispatchQueue.main.async{
+                    self.parkingCoordinates = parkCoord
+//                    self.tableView.reloadData()
+                    print("My assigned spot is \(parkCoord).")
+                }
+            }else{
+                print("Unable to parse JSON response.")
+            }
+            }.resume()
+    }
+    
     @IBAction func goButtonTapped(_ sender: UIButton) {
         pinImg.alpha = 0.0 //can also animate pin to drop down to map
         adressLabel.alpha = 0.0
+        
+        //change to user input later
+        let destinationX = 40.7570120489
+        let destinationY = -73.9851702027
+        let price = 10
+        let eDistance = 0.8
+        
+        fetchParkingData(destinationX: destinationX, destinationY: destinationY, price: price, eDistance: eDistance)
+        print("Check it out! I've got \(self.parkingCoordinates)")
+        /*
+        change data type from String to whatever you need
+        */
         getDirections()
     }
     
