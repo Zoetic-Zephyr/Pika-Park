@@ -14,11 +14,12 @@ class MapScreen: UIViewController, UISearchBarDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var adressLabel: UILabel!
-    @IBOutlet weak var goButton: UIButton!
+    @IBOutlet weak var findParkingButton: UIButton!
     @IBOutlet weak var centerButton: UIButton!
     @IBOutlet weak var pinImg: UIImageView!
     @IBOutlet weak var navigateButton: UIButton!
     @IBOutlet weak var searchButton: UIButton!
+    @IBOutlet weak var preferenceButton: UIButton!
     
     
     
@@ -36,6 +37,18 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         checkLocationServices()
         viewStyling()
     }
+    
+    // the two overrides below are to hide the navigation bar on MapScreen, and show it on PreferenceScreen
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    // end two overrides
     
     
     // 3.
@@ -153,7 +166,12 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     }
     
     func viewStyling() {
-        goButton.layer.cornerRadius = 5
+        findParkingButton.layer.cornerRadius = 5
+        centerButton.layer.cornerRadius = 5
+        navigateButton.layer.cornerRadius = 5
+        searchButton.layer.cornerRadius = 5
+        preferenceButton.layer.cornerRadius = 5
+        
         adressLabel.layer.masksToBounds = true
         adressLabel.layer.cornerRadius = 10
     }
@@ -251,6 +269,11 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         searchController.searchBar.delegate = self
         present(searchController, animated: true, completion: nil)
     }
+    
+    @IBAction func preferenceButtonTapped(_ sender: UIButton) {
+        self.performSegue(withIdentifier: "preferenceSegue", sender: self)
+    }
+    
     
 }
 
