@@ -119,7 +119,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     
     func getDirections(destinationCoordinate2D: CLLocationCoordinate2D) {
         guard let userCoordinate2D = locationManager.location?.coordinate else {
-            //TODO: inform user we don't have their current location
+            // inform user we don't have their current location
             return
         }
         // 12.1
@@ -262,10 +262,9 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     @IBAction func goButtonTapped(_ sender: UIButton) {
         pinImg.alpha = 0.0 //can also animate pin to drop down to map
         adressLabel.alpha = 0.0
-        
-        //change to user input later
-        let destinationX = 40.7570120489
-        let destinationY = -73.9851702027
+        let destinationCoordinate2D = getCenterLocation(for: mapView).coordinate
+        let destinationX = destinationCoordinate2D.latitude
+        let destinationY = destinationCoordinate2D.longitude
         let price = 10
         let eDistance = 0.8
         
