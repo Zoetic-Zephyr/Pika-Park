@@ -10,6 +10,8 @@ import UIKit
 import MapKit
 import CoreLocation
 
+import RevealingSplashView
+
 class MapScreen: UIViewController, UISearchBarDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
@@ -35,6 +37,20 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //Initialize a revealing Splash with with the iconImage, the initial size and the background color
+        let revealingSplashView = RevealingSplashView(iconImage: UIImage(named: "pikachu")!,iconInitialSize: CGSize(width: 600*2/5, height: 590*2/5), backgroundColor: UIColor(red:0.0, green:0.0, blue:0.0, alpha:1.0))
+        
+        //Adds the revealing splash view as a sub view
+        self.view.addSubview(revealingSplashView)
+        
+        revealingSplashView.animationType = SplashAnimationType.swingAndZoomOut
+        
+        //Starts animation
+        revealingSplashView.startAnimation(){
+            print("Splash Screen Completed")
+        }
+        
         // 5.
         checkLocationServices()
         viewStyling()
