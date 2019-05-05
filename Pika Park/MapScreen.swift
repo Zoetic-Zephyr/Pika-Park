@@ -21,7 +21,8 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var preferenceButton: UIButton!
     
-    var parkingCoordinates: String = ""
+    var parkingLocationDegrees: [Double] = [0.0,0.0] // received coordinates of parking spot, in format of double(latitude, longitude)
+    var parkingCoordinate2D: CLLocationCoordinate2D = CLLocationCoordinate2DMake(0.0, 0.0)
     var waiting: Int = 1
     
     let locationManager = CLLocationManager()
@@ -116,19 +117,19 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         return CLLocation(latitude: latitude, longitude: longitude)
     }
     
-    func getDirections() {
-        guard let location = locationManager.location?.coordinate else {
+    func getDirections(destinationCoordinate2D: CLLocationCoordinate2D) {
+        guard let userCoordinate2D = locationManager.location?.coordinate else {
             //TODO: inform user we don't have their current location
             return
         }
         // 12.1
-        let request = createDirectionsRequest(from: location)
+        let request = createDirectionsRequest(from: userCoordinate2D, to: destinationCoordinate2D)
         // 12.3
         let directions = MKDirections(request: request)
         // 13.3
         resetMapView(withNew: directions)
         
-        addDestinationAnnotation() // to add a pin on map at selected destination
+        addDestinationAnnotation(at: destinationCoordinate2D) // to add a pin on map at selected destination
         
         //12.4
         directions.calculate { [unowned self] (response, error) in
@@ -136,7 +137,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
             guard let response = response else { return } // TODO: show response not available in alert
             
             for route in response.routes {
-                let steps = route.steps // tableView for displaying the direction steps, extend beyond the tutorial
+//                let steps = route.steps // create an additional tableView for displaying the direction steps, extend beyond the tutorial
                 self.mapView.addOverlay(route.polyline)
                 self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true) // resize the view of the map to fit the route
                 self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, edgePadding: UIEdgeInsets(top: 50.0, left: 50.0, bottom: 50.0, right: 50.0), animated: true)
@@ -144,10 +145,10 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         }
     }
     // 12.2
-    func createDirectionsRequest(from coordinate: CLLocationCoordinate2D) -> MKDirections.Request {
-        let destinationCoordinate       = getCenterLocation(for: mapView).coordinate
-        let startingLocation            = MKPlacemark(coordinate: coordinate)
-        let destination                 = MKPlacemark(coordinate: destinationCoordinate)
+    func createDirectionsRequest(from userCoordinate2D: CLLocationCoordinate2D, to destinationCoordinate2D: CLLocationCoordinate2D) -> MKDirections.Request {
+//        let destinationCoordinate       = getCenterLocation(for: mapView).coordinate
+        let startingLocation            = MKPlacemark(coordinate: userCoordinate2D)
+        let destination                 = MKPlacemark(coordinate: destinationCoordinate2D)
         
         let request                     = MKDirections.Request()
         request.source                  = MKMapItem(placemark: startingLocation)
@@ -170,6 +171,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         findParkingButton.layer.cornerRadius = 5
         centerButton.layer.cornerRadius = 5
         navigateButton.layer.cornerRadius = 5
+        navigateButton.alpha = 0.0  // navi button should appear only after receiving parking coordinates from backend
         searchButton.layer.cornerRadius = 5
         preferenceButton.layer.cornerRadius = 5
         
@@ -177,10 +179,11 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         adressLabel.layer.cornerRadius = 10
     }
 
-    func addDestinationAnnotation() {
+    func addDestinationAnnotation(at destinationCoordinate2D: CLLocationCoordinate2D) {
         let destinationAnnotation = MKPointAnnotation()
         destinationAnnotation.subtitle = "Your Destination"
-        destinationAnnotation.coordinate = getCenterLocation(for: mapView).coordinate
+//        destinationAnnotation.coordinate = getCenterLocation(for: mapView).coordinate
+        destinationAnnotation.coordinate = destinationCoordinate2D
         mapView.addAnnotation(destinationAnnotation)
     }
     // resond to user tap "search" button
@@ -241,7 +244,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     }
     
     func fetchParkingData(destinationX: Double, destinationY: Double, price: Int, eDistance: Double) {
-        let url = URL(string: "http://localhost:8080/\(destinationX)/\(destinationY)/\(price)/\(eDistance)")!
+        let url = URL(string: "http://10.20.248.76:8080/\(destinationX)/\(destinationY)/\(price)/\(eDistance)")!
         
         URLSession.shared.dataTask(with: url) { data, response, error
             in
@@ -250,7 +253,8 @@ class MapScreen: UIViewController, UISearchBarDelegate {
                 return
             }
             let results = String(data: data, encoding: String.Encoding.utf8) ?? "Unable to parse JSON response.\n"
-            self.parkingCoordinates = results
+            self.parkingLocationDegrees[0] = Double(results.split(separator: ",")[0])!
+            self.parkingLocationDegrees[1] = Double(results.split(separator: ",")[1])!
             self.waiting = 0
             }.resume()
     }
@@ -269,15 +273,16 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         
         //A function check whether we get response
         while waiting == 1 {
-            print("Waiting...")
+//            print("Waiting...")
         }
         
         waiting = 1
-        print("Check it out! I've got \(self.parkingCoordinates)")
-        /*
-        change data type from String to whatever you need
-        */
-        getDirections()
+        print("Check it out! I've got latitude:", NSString(format: "%.10f", (self.parkingLocationDegrees)[0]), "longitude:", NSString(format: "%.10f", (self.parkingLocationDegrees)[1]))
+        
+        navigateButton.alpha = 1.0
+        
+        self.parkingCoordinate2D = CLLocationCoordinate2DMake(self.parkingLocationDegrees[0], self.parkingLocationDegrees[1])
+        getDirections(destinationCoordinate2D: self.parkingCoordinate2D)
     }
     
     @IBAction func centerButtonTapped(_ sender: UIButton) {
@@ -286,16 +291,19 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         centerViewOnUserLocation()
         pinImg.alpha = 1.0
         adressLabel.alpha = 1.0
+        
+        self.parkingLocationDegrees = [0.0, 0.0]    // reset parking coordinates
+        navigateButton.alpha = 0.0 // hide navi button
     }
     @IBAction func navigateButtonTapped(_ sender: UIButton) {
-        let destinationCoordinate = getCenterLocation(for: mapView).coordinate // this should not be the current center location!
+//        let destinationCoordinate = getCenterLocation(for: mapView).coordinate // this should not be the current center location!
         let regionDistance: CLLocationDistance = 1000
-        let regionSpan = MKCoordinateRegion(center: destinationCoordinate, latitudinalMeters: regionDistance, longitudinalMeters: regionDistance)
+        let regionSpan = MKCoordinateRegion(center: self.parkingCoordinate2D, latitudinalMeters: regionDistance, longitudinalMeters: regionDistance)
         
         let options = [MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center), MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)]
-        let placemark = MKPlacemark(coordinate: destinationCoordinate)
+        let placemark = MKPlacemark(coordinate: self.parkingCoordinate2D)
         let mapItem = MKMapItem(placemark: placemark)
-        mapItem.name = "Your Destination"
+        mapItem.name = "The spot, just for you!"
         mapItem.openInMaps(launchOptions: options)
     }
     
