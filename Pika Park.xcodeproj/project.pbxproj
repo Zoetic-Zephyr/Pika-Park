@@ -13,6 +13,7 @@
 		01734CBD2259712100C4EDF3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01734CBB2259712100C4EDF3 /* Main.storyboard */; };
 		01734CBF2259712200C4EDF3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01734CBE2259712200C4EDF3 /* Assets.xcassets */; };
 		01734CC22259712200C4EDF3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01734CC02259712200C4EDF3 /* LaunchScreen.storyboard */; };
+		8216B6CD5BC7C777A482A4A9 /* Pods_Pika_Park.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E34A39B20EF6F21D286E55 /* Pods_Pika_Park.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,9 @@
 		01734CBE2259712200C4EDF3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		01734CC12259712200C4EDF3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		01734CC32259712200C4EDF3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E4E34A39B20EF6F21D286E55 /* Pods_Pika_Park.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pika_Park.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E81505D4C67B52FA9D0E52D2 /* Pods-Pika Park.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pika Park.debug.xcconfig"; path = "Target Support Files/Pods-Pika Park/Pods-Pika Park.debug.xcconfig"; sourceTree = "<group>"; };
+		EFD82F83CB794B833C1BDCFB /* Pods-Pika Park.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pika Park.release.xcconfig"; path = "Target Support Files/Pods-Pika Park/Pods-Pika Park.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +35,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8216B6CD5BC7C777A482A4A9 /* Pods_Pika_Park.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +47,8 @@
 			children = (
 				01734CB62259712100C4EDF3 /* Pika Park */,
 				01734CB52259712100C4EDF3 /* Products */,
+				3F08002E4A5477B4E236743A /* Pods */,
+				AF8BC48DA31F1C1FEE502799 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -67,6 +74,24 @@
 			path = "Pika Park";
 			sourceTree = "<group>";
 		};
+		3F08002E4A5477B4E236743A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E81505D4C67B52FA9D0E52D2 /* Pods-Pika Park.debug.xcconfig */,
+				EFD82F83CB794B833C1BDCFB /* Pods-Pika Park.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		AF8BC48DA31F1C1FEE502799 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E4E34A39B20EF6F21D286E55 /* Pods_Pika_Park.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -74,9 +99,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 01734CC62259712200C4EDF3 /* Build configuration list for PBXNativeTarget "Pika Park" */;
 			buildPhases = (
+				2F53AE345D99958912B03667 /* [CP] Check Pods Manifest.lock */,
 				01734CB02259712100C4EDF3 /* Sources */,
 				01734CB12259712100C4EDF3 /* Frameworks */,
 				01734CB22259712100C4EDF3 /* Resources */,
+				BA16F3E12875A09EE25FE9EB /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -132,6 +159,53 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2F53AE345D99958912B03667 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Pika Park-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BA16F3E12875A09EE25FE9EB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Pika Park/Pods-Pika Park-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/RevealingSplashView/RevealingSplashView.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RevealingSplashView.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Pika Park/Pods-Pika Park-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		01734CB02259712100C4EDF3 /* Sources */ = {
@@ -284,6 +358,7 @@
 		};
 		01734CC72259712200C4EDF3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E81505D4C67B52FA9D0E52D2 /* Pods-Pika Park.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -303,6 +378,7 @@
 		};
 		01734CC82259712200C4EDF3 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EFD82F83CB794B833C1BDCFB /* Pods-Pika Park.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
