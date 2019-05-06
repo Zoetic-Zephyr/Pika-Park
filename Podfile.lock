@@ -1,16 +1,22 @@
 PODS:
   - RevealingSplashView (0.6.0)
+  - SwiftMessages (6.0.2):
+    - SwiftMessages/App (= 6.0.2)
+  - SwiftMessages/App (6.0.2)
 
 DEPENDENCIES:
   - RevealingSplashView
+  - SwiftMessages
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - RevealingSplashView
+    - SwiftMessages
 
 SPEC CHECKSUMS:
   RevealingSplashView: 40c5a770894459736acdc95655eeba0dd30ce91c
+  SwiftMessages: 8b3cc68dba2f1c91aac1a74c90b10287aac35371
 
-PODFILE CHECKSUM: 819b863f5c68ca1af287931d1de126d0d39c03a7
+PODFILE CHECKSUM: f7e49c172d2d8881939279a748a876f9c29a1eb9
 
 COCOAPODS: 1.6.1
