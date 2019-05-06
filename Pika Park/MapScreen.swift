@@ -480,7 +480,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
             lessWalkButton.isEnabled = true
         }
         
-        MapScreen.successCentered()
+//        MapScreen.successCentered()
 //        MapScreen.failCentered()
     }
     @IBAction func navigateButtonTapped(_ sender: UIButton) {
