@@ -97,12 +97,10 @@
                                     <action selector="centerButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="k8f-n5-Z2S"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yWl-kX-EtN">
-                                <rect key="frame" x="262" y="148" width="97" height="44"/>
+                            <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yWl-kX-EtN">
+                                <rect key="frame" x="314" y="96" width="36" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.56859982013702393" green="0.49018263816833496" blue="0.90928179025650024" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
-                                <state key="normal" title="Search">
+                                <state key="normal" image="search">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
@@ -198,5 +196,6 @@
     <resources>
         <image name="center" width="80" height="80"/>
         <image name="pin" width="96" height="96"/>
+        <image name="search" width="90" height="90"/>
     </resources>
 </document>
