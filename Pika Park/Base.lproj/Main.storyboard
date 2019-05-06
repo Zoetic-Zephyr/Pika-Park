@@ -112,8 +112,8 @@
                                     <constraint firstAttribute="height" constant="80" id="1HN-gY-ZI0"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Walk" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zyT-69-3KE">
-                                <rect key="frame" x="169.66666666666666" y="333" width="36" height="22"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100m walk" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zyT-69-3KE">
+                                <rect key="frame" x="148.33333333333334" y="333" width="78.666666666666657" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="22" id="nbE-f7-hlO"/>
                                 </constraints>
@@ -128,6 +128,9 @@
                                     <constraint firstAttribute="width" constant="20" id="cIJ-1D-ARt"/>
                                 </constraints>
                                 <state key="normal" image="plus"/>
+                                <connections>
+                                    <action selector="moreWalkButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XFn-aK-2TV"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WdZ-eG-igD">
                                 <rect key="frame" x="120" y="334" width="20" height="20"/>
@@ -136,9 +139,12 @@
                                     <constraint firstAttribute="width" constant="20" id="scc-BC-us9"/>
                                 </constraints>
                                 <state key="normal" image="subtract"/>
+                                <connections>
+                                    <action selector="lessWalkButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ffB-O4-OPF"/>
+                                </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kIl-tO-kdk">
-                                <rect key="frame" x="169.66666666666666" y="306" width="35.666666666666657" height="22"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 $/hr" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kIl-tO-kdk">
+                                <rect key="frame" x="165.66666666666666" y="306" width="43.666666666666657" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="22" id="vbM-WP-gzO"/>
                                 </constraints>
@@ -153,6 +159,9 @@
                                     <constraint firstAttribute="height" constant="20" id="w9n-Vo-qdA"/>
                                 </constraints>
                                 <state key="normal" image="subtract"/>
+                                <connections>
+                                    <action selector="lessPriceButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="phV-A0-reE"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yQn-tX-sXO">
                                 <rect key="frame" x="235" y="308" width="20" height="20"/>
@@ -161,6 +170,9 @@
                                     <constraint firstAttribute="height" constant="20" id="sct-7P-Uey"/>
                                 </constraints>
                                 <state key="normal" image="plus"/>
+                                <connections>
+                                    <action selector="morePriceButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zdw-jQ-Zdg"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -209,11 +221,17 @@
                         <outlet property="adressLabel" destination="mwB-O9-IW1" id="C1c-hR-vua"/>
                         <outlet property="centerButton" destination="5WO-23-1eY" id="HMh-zL-ERp"/>
                         <outlet property="findParkingButton" destination="DgV-ZT-6JK" id="G87-7H-caT"/>
+                        <outlet property="lessPriceButton" destination="eSP-AX-YXu" id="PQ7-RQ-2wS"/>
+                        <outlet property="lessWalkButton" destination="WdZ-eG-igD" id="bQj-97-QZx"/>
                         <outlet property="mapView" destination="WA9-hD-qqD" id="1uo-4k-diD"/>
+                        <outlet property="morePriceButton" destination="yQn-tX-sXO" id="pmK-Wd-HAk"/>
+                        <outlet property="moreWalkButton" destination="zWL-sJ-TBQ" id="lKY-ca-fzt"/>
                         <outlet property="navigateButton" destination="BWD-ZS-bNG" id="0xj-6j-Qte"/>
                         <outlet property="pinImg" destination="Mqe-iy-8cE" id="wNG-Pj-y4F"/>
+                        <outlet property="priceLabel" destination="kIl-tO-kdk" id="qTE-Ak-nXP"/>
                         <outlet property="searchButton" destination="yWl-kX-EtN" id="X1z-2L-1kK"/>
                         <outlet property="searchImg" destination="uuL-jj-jUA" id="m4i-UY-bF5"/>
+                        <outlet property="walkLabel" destination="zyT-69-3KE" id="xO6-tp-qVa"/>
                         <outlet property="whiteBlob" destination="drl-pt-hX9" id="JDi-NM-MSp"/>
                     </connections>
                 </viewController>
