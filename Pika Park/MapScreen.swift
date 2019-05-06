@@ -226,6 +226,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
 //        adressLabel.layer.masksToBounds = false
         adressLabel.layer.shadowRadius = 1.0
         adressLabel.layer.shadowOpacity = 0.1
+        adressLabel.adjustsFontSizeToFitWidth = true
         
         whiteBlob.layer.shadowColor = UIColor.black.cgColor
         whiteBlob.layer.shadowOffset = CGSize(width: 0.0, height: 4.0)
@@ -334,8 +335,8 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         let currentX = Double(userCoordinate2D.latitude)
         let currentY = Double(userCoordinate2D.longitude)
         
-        let price = 10
-        let eDistance = 0.8
+        let price = self.userPrice
+        let eDistance = Double(self.userWalk) / 1000
         
         fetchParkingData(destinationX: destinationX, destinationY: destinationY, price: price, eDistance: eDistance, currentX: currentX, currentY: currentY)
         
