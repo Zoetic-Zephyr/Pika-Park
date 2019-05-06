@@ -21,6 +21,8 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     @IBOutlet weak var pinImg: UIImageView!
     @IBOutlet weak var navigateButton: UIButton!
     @IBOutlet weak var searchButton: UIButton!
+    @IBOutlet weak var searchImg: UIImageView!
+    
     
     var parkingLocationDegrees: [Double] = [0.0,0.0] // received coordinates of parking spot, in format of double(latitude, longitude)
     var parkingCoordinate2D: CLLocationCoordinate2D = CLLocationCoordinate2DMake(0.0, 0.0)
@@ -279,6 +281,8 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     @IBAction func findParkingButtonTapped(_ sender: UIButton) {
         pinImg.alpha = 0.0 //can also animate pin to drop down to map
         adressLabel.alpha = 0.0
+        searchImg.alpha = 0.0
+        
         let destinationCoordinate2D = getCenterLocation(for: mapView).coordinate
         let destinationX = destinationCoordinate2D.latitude
         let destinationY = destinationCoordinate2D.longitude
@@ -319,6 +323,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         centerViewOnUserLocation()
         pinImg.alpha = 1.0
         adressLabel.alpha = 1.0
+        searchImg.alpha = 1.0
         
         self.parkingLocationDegrees = [0.0, 0.0]    // reset parking coordinates
         navigateButton.alpha = 0.0 // hide navi button
