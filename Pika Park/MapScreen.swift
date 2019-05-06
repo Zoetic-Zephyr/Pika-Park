@@ -185,7 +185,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     
     func viewStyling() {
         findParkingButton.layer.cornerRadius = 5
-        centerButton.layer.cornerRadius = 5
+        centerButton.layer.cornerRadius = 0.5 * centerButton.bounds.size.width
         navigateButton.layer.cornerRadius = 5
         navigateButton.alpha = 0.0  // navi button should appear only after receiving parking coordinates from backend
         searchButton.layer.cornerRadius = 5
