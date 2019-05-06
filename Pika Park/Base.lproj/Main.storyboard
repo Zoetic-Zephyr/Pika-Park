@@ -32,7 +32,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pinned Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mwB-O9-IW1">
-                                <rect key="frame" x="16" y="140" width="343" height="52"/>
+                                <rect key="frame" x="16" y="88" width="343" height="52"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
@@ -69,12 +69,10 @@
                                     <action selector="navigateButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Y0D-OD-jFa"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yWl-kX-EtN">
-                                <rect key="frame" x="272" y="88" width="97" height="44"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yWl-kX-EtN">
+                                <rect key="frame" x="312" y="95" width="38" height="38"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.56859982013702393" green="0.49018263816833496" blue="0.90928179025650024" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
-                                <state key="normal" title="Search">
+                                <state key="normal" image="search">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
@@ -82,7 +80,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4KB-FD-TTx">
-                                <rect key="frame" x="16" y="88" width="99" height="44"/>
+                                <rect key="frame" x="16" y="148" width="99" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.75188672542572021" green="0.5392875075340271" blue="0.99968904256820679" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
@@ -93,11 +91,14 @@
                                     <action selector="preferenceButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ubA-lM-osc"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5WO-23-1eY">
-                                <rect key="frame" x="290" y="645" width="42" height="42"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5WO-23-1eY">
+                                <rect key="frame" x="301" y="628" width="42" height="42"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <rect key="contentStretch" x="0.0" y="0.0" width="0.90000000000000002" height="1"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="42" id="GTv-BR-Sgh"/>
+                                    <constraint firstAttribute="height" constant="42" id="NDY-JT-CBA"/>
+                                </constraints>
                                 <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
                                 <state key="normal" image="center">
                                     <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -112,15 +113,18 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="BWD-ZS-bNG" secondAttribute="bottom" constant="42" id="3Fs-IK-CRj"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="DgV-ZT-6JK" secondAttribute="bottom" constant="42" id="6RF-0q-4Hj"/>
                             <constraint firstItem="Mqe-iy-8cE" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="87X-Vo-wU1"/>
-                            <constraint firstItem="DgV-ZT-6JK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="32" id="8ec-CO-Vt2"/>
                             <constraint firstItem="Mqe-iy-8cE" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-20" id="Fug-BG-XFk"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="BWD-ZS-bNG" secondAttribute="bottom" constant="42" id="GkR-LY-p4l"/>
+                            <constraint firstItem="DgV-ZT-6JK" firstAttribute="top" secondItem="5WO-23-1eY" secondAttribute="bottom" constant="16" id="RKs-uT-cZU"/>
                             <constraint firstItem="WA9-hD-qqD" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="SFD-fB-bk7"/>
                             <constraint firstAttribute="trailing" secondItem="WA9-hD-qqD" secondAttribute="trailing" id="WYU-0I-Qi3"/>
-                            <constraint firstItem="BWD-ZS-bNG" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="32" id="bOJ-gE-wzD"/>
                             <constraint firstItem="WA9-hD-qqD" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="rdK-Qj-Hub"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="DgV-ZT-6JK" secondAttribute="trailing" constant="32" id="siY-OI-fss"/>
                             <constraint firstItem="BWD-ZS-bNG" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="tYZ-dJ-42p"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="5WO-23-1eY" secondAttribute="trailing" constant="32" id="vQC-Gc-vdQ"/>
                             <constraint firstAttribute="bottom" secondItem="WA9-hD-qqD" secondAttribute="bottom" id="xOO-hN-YiA"/>
                             <constraint firstItem="DgV-ZT-6JK" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="yom-ho-TyQ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="BWD-ZS-bNG" secondAttribute="trailing" constant="32" id="zq7-Gx-FeE"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -193,5 +197,6 @@
     <resources>
         <image name="center" width="80" height="80"/>
         <image name="pin" width="96" height="96"/>
+        <image name="search" width="90" height="90"/>
     </resources>
 </document>
