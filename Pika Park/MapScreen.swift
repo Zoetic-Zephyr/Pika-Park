@@ -245,7 +245,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
 
     func addDestinationAnnotation(at destinationCoordinate2D: CLLocationCoordinate2D) {
         let destinationAnnotation = MKPointAnnotation()
-        destinationAnnotation.subtitle = "Your Destination"
+        destinationAnnotation.subtitle = "Your Spot"
 //        destinationAnnotation.coordinate = getCenterLocation(for: mapView).coordinate
         destinationAnnotation.coordinate = destinationCoordinate2D
         mapView.addAnnotation(destinationAnnotation)
