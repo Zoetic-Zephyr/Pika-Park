@@ -309,7 +309,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     }
     
     func fetchParkingData(destinationX: Double, destinationY: Double, price: Int, eDistance: Double, currentX: Double, currentY: Double) {
-        let url = URL(string: "http://10.17.23.75:8080/\(destinationX)/\(destinationY)/\(price)/\(eDistance)/\(currentX)/\(currentY)")!
+        let url = URL(string: "http://10.16.220.73:8080/\(destinationX)/\(destinationY)/\(price)/\(eDistance)/\(currentX)/\(currentY)")!
         
         URLSession.shared.dataTask(with: url) { data, response, error
             in
