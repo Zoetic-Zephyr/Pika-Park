@@ -185,9 +185,11 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     
     func viewStyling() {
         findParkingButton.layer.cornerRadius = 5
-        centerButton.layer.cornerRadius = 0.5 * centerButton.bounds.size.width
         navigateButton.layer.cornerRadius = 5
         navigateButton.alpha = 0.0  // navi button should appear only after receiving parking coordinates from backend
+        navigateButton.isEnabled = false
+        
+        centerButton.layer.cornerRadius = 0.5 * centerButton.bounds.size.width
         searchButton.layer.cornerRadius = 5
         preferenceButton.layer.cornerRadius = 5
         
@@ -304,7 +306,9 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         print("Check it out! I've got latitude:", NSString(format: "%.10f", (self.parkingLocationDegrees)[0]), "longitude:", NSString(format: "%.10f", (self.parkingLocationDegrees)[1]))
         
         findParkingButton.alpha = 0.0
+        findParkingButton.isEnabled = false
         navigateButton.alpha = 1.0
+        navigateButton.isEnabled = true
         
         self.parkingCoordinate2D = CLLocationCoordinate2DMake(self.parkingLocationDegrees[0], self.parkingLocationDegrees[1])
         getDirections(destinationCoordinate2D: self.parkingCoordinate2D)
@@ -319,6 +323,10 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         
         self.parkingLocationDegrees = [0.0, 0.0]    // reset parking coordinates
         navigateButton.alpha = 0.0 // hide navi button
+        navigateButton.isEnabled = false
+        
+        findParkingButton.alpha = 1.0  // show findParking button
+        findParkingButton.isEnabled = true
     }
     @IBAction func navigateButtonTapped(_ sender: UIButton) {
 //        let destinationCoordinate = getCenterLocation(for: mapView).coordinate // this should not be the current center location!
