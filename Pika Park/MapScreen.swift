@@ -11,6 +11,7 @@ import MapKit
 import CoreLocation
 
 import RevealingSplashView
+import SwiftMessages
 
 class MapScreen: UIViewController, UISearchBarDelegate {
 
@@ -308,7 +309,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     }
     
     func fetchParkingData(destinationX: Double, destinationY: Double, price: Int, eDistance: Double, currentX: Double, currentY: Double) {
-        let url = URL(string: "http://10.20.64.21:8080/\(destinationX)/\(destinationY)/\(price)/\(eDistance)/\(currentX)/\(currentY)")!
+        let url = URL(string: "http://10.17.23.75:8080/\(destinationX)/\(destinationY)/\(price)/\(eDistance)/\(currentX)/\(currentY)")!
         
         URLSession.shared.dataTask(with: url) { data, response, error
             in
@@ -321,6 +322,38 @@ class MapScreen: UIViewController, UISearchBarDelegate {
             self.parkingLocationDegrees[1] = Double(results.split(separator: ",")[1])!
             self.waiting = 0
             }.resume()
+    }
+    
+    static func failCentered() {
+        let messageView: MessageView = MessageView.viewFromNib(layout: .centeredView)
+        messageView.configureBackgroundView(width: 250)
+        messageView.configureContent(title: "Oops!", body: "Pikachu couldn't find you any parking spots here...", iconImage: UIImage(named: "pikachu-fail"), iconText: nil, buttonImage: nil, buttonTitle: "Never mind") { _ in
+            SwiftMessages.hide()
+        }
+        messageView.backgroundView.backgroundColor = UIColor.init(white: 0.97, alpha: 1)
+        messageView.backgroundView.layer.cornerRadius = 10
+        var config = SwiftMessages.defaultConfig
+        config.presentationStyle = .center
+        config.duration = .forever
+        config.dimMode = .blur(style: .dark, alpha: 1, interactive: true)
+        config.presentationContext  = .window(windowLevel: UIWindow.Level.statusBar)
+        SwiftMessages.show(config: config, view: messageView)
+    }
+    
+    static func successCentered() {
+        let messageView: MessageView = MessageView.viewFromNib(layout: .centeredView)
+        messageView.configureBackgroundView(width: 250)
+        messageView.configureContent(title: "Pika!", body: "Pikachu find you a spot", iconImage: UIImage(named: "pikachu-success"), iconText: nil, buttonImage: nil, buttonTitle: "Show route") { _ in
+            SwiftMessages.hide()
+        }
+        messageView.backgroundView.backgroundColor = UIColor.init(white: 0.97, alpha: 1)
+        messageView.backgroundView.layer.cornerRadius = 10
+        var config = SwiftMessages.defaultConfig
+        config.presentationStyle = .center
+        config.duration = .forever
+        config.dimMode = .blur(style: .dark, alpha: 1, interactive: true)
+        config.presentationContext  = .window(windowLevel: UIWindow.Level.statusBar)
+        SwiftMessages.show(config: config, view: messageView)
     }
     
     @IBAction func findParkingButtonTapped(_ sender: UIButton) {
@@ -352,6 +385,13 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         }
         
         waiting = 1
+        
+        if self.parkingLocationDegrees[0] == -999.0 {
+            MapScreen.failCentered()
+        } else {
+            MapScreen.successCentered()
+        }
+        
         print("Check it out! I've got latitude:", NSString(format: "%.10f", (self.parkingLocationDegrees)[0]), "longitude:", NSString(format: "%.10f", (self.parkingLocationDegrees)[1]))
         
         UIView.animate(withDuration: 0.2) {
@@ -439,6 +479,9 @@ class MapScreen: UIViewController, UISearchBarDelegate {
             lessWalkButton.alpha = 1.0
             lessWalkButton.isEnabled = true
         }
+        
+        MapScreen.successCentered()
+//        MapScreen.failCentered()
     }
     @IBAction func navigateButtonTapped(_ sender: UIButton) {
 //        let destinationCoordinate = getCenterLocation(for: mapView).coordinate // this should not be the current center location!
