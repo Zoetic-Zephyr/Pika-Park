@@ -259,8 +259,8 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         }
     }
     
-    func fetchParkingData(destinationX: Double, destinationY: Double, price: Int, eDistance: Double) {
-        let url = URL(string: "http://10.20.248.76:8080/\(destinationX)/\(destinationY)/\(price)/\(eDistance)")!
+    func fetchParkingData(destinationX: Double, destinationY: Double, price: Int, eDistance: Double, currentX: Double, currentY: Double) {
+        let url = URL(string: "http://10.20.64.21:8080/\(destinationX)/\(destinationY)/\(price)/\(eDistance)/\(currentX)/\(currentY)")!
         
         URLSession.shared.dataTask(with: url) { data, response, error
             in
@@ -281,10 +281,19 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         let destinationCoordinate2D = getCenterLocation(for: mapView).coordinate
         let destinationX = destinationCoordinate2D.latitude
         let destinationY = destinationCoordinate2D.longitude
+        
+        guard let userCoordinate2D = locationManager.location?.coordinate else {
+            // inform user we don't have their current location
+            return
+        }
+        
+        let currentX = Double(userCoordinate2D.latitude)
+        let currentY = Double(userCoordinate2D.longitude)
+        
         let price = 10
         let eDistance = 0.8
         
-        fetchParkingData(destinationX: destinationX, destinationY: destinationY, price: price, eDistance: eDistance)
+        fetchParkingData(destinationX: destinationX, destinationY: destinationY, price: price, eDistance: eDistance, currentX: currentX, currentY: currentY)
         
         //A function check whether we get response
         while waiting == 1 {
