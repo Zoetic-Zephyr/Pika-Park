@@ -275,7 +275,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
             }.resume()
     }
     
-    @IBAction func goButtonTapped(_ sender: UIButton) {
+    @IBAction func findParkingButtonTapped(_ sender: UIButton) {
         pinImg.alpha = 0.0 //can also animate pin to drop down to map
         adressLabel.alpha = 0.0
         let destinationCoordinate2D = getCenterLocation(for: mapView).coordinate
