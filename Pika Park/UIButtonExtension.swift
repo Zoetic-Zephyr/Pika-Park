@@ -22,4 +22,17 @@ extension UIButton {
         
         layer.add(pulse, forKey: nil)
     }
+    
+    func pulsate2() {
+        let pulse = CASpringAnimation(keyPath: "transform.scale")
+        pulse.duration = 0.1
+        pulse.fromValue = 1.0
+        pulse.toValue = 0.6
+        pulse.autoreverses = true
+        pulse.repeatCount = 1
+        pulse.initialVelocity = 1.0
+        pulse.damping = 1.0
+        
+        layer.add(pulse, forKey: nil)
+    }
 }

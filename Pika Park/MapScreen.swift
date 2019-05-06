@@ -53,7 +53,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         super.viewDidLoad()
         
         //Initialize a revealing Splash with with the iconImage, the initial size and the background color
-        let revealingSplashView = RevealingSplashView(iconImage: UIImage(named: "pikachu")!,iconInitialSize: CGSize(width: 600*2/5, height: 590*2/5), backgroundColor: UIColor(red:0.0, green:0.0, blue:0.0, alpha:1.0))
+        let revealingSplashView = RevealingSplashView(iconImage: UIImage(named: "pikachu2")!,iconInitialSize: CGSize(width: 600*2/5, height: 590*2/5), backgroundColor: UIColor(red:0.0, green:0.0, blue:0.0, alpha:1.0))
         
         //Adds the revealing splash view as a sub view
         self.view.addSubview(revealingSplashView)
@@ -327,6 +327,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         pinImg.alpha = 0.0 //can also animate pin to drop down to map
         adressLabel.alpha = 0.0
         searchImg.alpha = 0.0
+        searchButton.isEnabled = false
         
         let destinationCoordinate2D = getCenterLocation(for: mapView).coordinate
         let destinationX = destinationCoordinate2D.latitude
@@ -353,9 +354,16 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         waiting = 1
         print("Check it out! I've got latitude:", NSString(format: "%.10f", (self.parkingLocationDegrees)[0]), "longitude:", NSString(format: "%.10f", (self.parkingLocationDegrees)[1]))
         
-        findParkingButton.alpha = 0.0
+        UIView.animate(withDuration: 0.2) {
+            self.findParkingButton.alpha = 0.0
+        }
+//        findParkingButton.alpha = 0.0
         findParkingButton.isEnabled = false
-        navigateButton.alpha = 1.0
+
+        UIView.animate(withDuration: 0.4) {
+            self.navigateButton.alpha = 1.0
+        }
+//        navigateButton.alpha = 1.0
         navigateButton.isEnabled = true
         
         whiteBlob.alpha = 0.0
@@ -385,6 +393,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         pinImg.alpha = 1.0
         adressLabel.alpha = 1.0
         searchImg.alpha = 1.0
+        searchButton.isEnabled = true
         
         self.parkingLocationDegrees = [0.0, 0.0]    // reset parking coordinates
         navigateButton.alpha = 0.0 // hide navi button
@@ -450,6 +459,8 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     }
     
     @IBAction func lessPriceButtonTapped(_ sender: UIButton) {
+        sender.pulsate2()
+        
         morePriceButton.alpha = 1.0
         morePriceButton.isEnabled = true
         if self.userPrice > 0{
@@ -467,6 +478,8 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     }
     
     @IBAction func morePriceButtonTapped(_ sender: UIButton) {
+        sender.pulsate2()
+        
         lessPriceButton.alpha = 1.0
         lessPriceButton.isEnabled = true
         if self.userPrice < 20{
@@ -484,6 +497,8 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     }
 
     @IBAction func lessWalkButtonTapped(_ sender: UIButton) {
+        sender.pulsate2()
+        
         moreWalkButton.alpha = 1.0
         moreWalkButton.isEnabled = true
         if self.userWalk > 100 {
@@ -497,6 +512,8 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     }
     
     @IBAction func moreWalkButtonTapped(_ sender: UIButton) {
+        sender.pulsate2()
+        
         lessWalkButton.alpha = 1.0
         lessWalkButton.isEnabled = true
         if self.userWalk < 600 {
