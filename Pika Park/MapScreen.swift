@@ -209,6 +209,11 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         navigateButton.layer.cornerRadius = 5
         navigateButton.alpha = 0.0  // navi button should appear only after receiving parking coordinates from backend
         navigateButton.isEnabled = false
+        navigateButton.layer.shadowColor = UIColor.black.cgColor
+        navigateButton.layer.shadowOffset = CGSize(width: 0.0, height: 4.0)
+        navigateButton.layer.masksToBounds = false
+        navigateButton.layer.shadowRadius = 1.0
+        navigateButton.layer.shadowOpacity = 0.2
         
         centerButton.layer.cornerRadius = 0.5 * centerButton.bounds.size.width
         centerButton.layer.shadowColor = UIColor.black.cgColor
@@ -372,6 +377,8 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     }
     
     @IBAction func centerButtonTapped(_ sender: UIButton) {
+        sender.pulsate()    // pulse animation
+        
         mapView.removeOverlays(mapView.overlays)
         mapView.removeAnnotations(mapView.annotations)
         centerViewOnUserLocation()
@@ -385,6 +392,44 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         
         findParkingButton.alpha = 1.0  // show findParking button
         findParkingButton.isEnabled = true
+        
+        whiteBlob.alpha = 1.0
+        
+        priceLabel.alpha = 1.0
+        if self.userPrice == 20 {
+            morePriceButton.alpha = 0.0
+            morePriceButton.isEnabled = false
+            lessPriceButton.alpha = 1.0
+            lessPriceButton.isEnabled = true
+        } else if self.userPrice == 2 {
+            morePriceButton.alpha = 1.0
+            morePriceButton.isEnabled = true
+            lessPriceButton.alpha = 0.0
+            lessPriceButton.isEnabled = false
+        } else{
+            morePriceButton.alpha = 1.0
+            morePriceButton.isEnabled = true
+            lessPriceButton.alpha = 1.0
+            lessPriceButton.isEnabled = true
+        }
+        
+        walkLabel.alpha = 1.0
+        if self.userWalk == 600 {
+            moreWalkButton.alpha = 0.0
+            moreWalkButton.isEnabled = false
+            lessWalkButton.alpha = 1.0
+            lessWalkButton.isEnabled = true
+        } else if self.userWalk == 100 {
+            moreWalkButton.alpha = 1.0
+            moreWalkButton.isEnabled = true
+            lessWalkButton.alpha = 0.0
+            lessWalkButton.isEnabled = false
+        } else{
+            moreWalkButton.alpha = 1.0
+            moreWalkButton.isEnabled = true
+            lessWalkButton.alpha = 1.0
+            lessWalkButton.isEnabled = true
+        }
     }
     @IBAction func navigateButtonTapped(_ sender: UIButton) {
 //        let destinationCoordinate = getCenterLocation(for: mapView).coordinate // this should not be the current center location!
@@ -406,6 +451,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     
     @IBAction func lessPriceButtonTapped(_ sender: UIButton) {
         morePriceButton.alpha = 1.0
+        morePriceButton.isEnabled = true
         if self.userPrice > 0{
             if self.userPrice > 5 {
                 self.userPrice += -5
@@ -416,11 +462,13 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         }
         if self.userPrice == 2{
             lessPriceButton.alpha = 0.0
+            lessPriceButton.isEnabled = false
         }
     }
     
     @IBAction func morePriceButtonTapped(_ sender: UIButton) {
         lessPriceButton.alpha = 1.0
+        lessPriceButton.isEnabled = true
         if self.userPrice < 20{
             if self.userPrice > 2 {
                 self.userPrice += 5
@@ -431,28 +479,33 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         }
         if self.userPrice == 20 {
             morePriceButton.alpha = 0.0
+            morePriceButton.isEnabled = false
         }
     }
 
     @IBAction func lessWalkButtonTapped(_ sender: UIButton) {
         moreWalkButton.alpha = 1.0
+        moreWalkButton.isEnabled = true
         if self.userWalk > 100 {
             self.userWalk += -100
             walkLabel.text = String(self.userWalk) + "m walk"
         }
         if self.userWalk == 100{    // no less walk
             lessWalkButton.alpha = 0.0
+            lessWalkButton.isEnabled = false
         }
     }
     
     @IBAction func moreWalkButtonTapped(_ sender: UIButton) {
         lessWalkButton.alpha = 1.0
+        lessWalkButton.isEnabled = true
         if self.userWalk < 600 {
             self.userWalk += 100
             walkLabel.text = String(self.userWalk) + "m walk"
         }
         if self.userWalk == 600{    // no more walk
             moreWalkButton.alpha = 0.0
+            moreWalkButton.isEnabled = false
         }
     }
     
