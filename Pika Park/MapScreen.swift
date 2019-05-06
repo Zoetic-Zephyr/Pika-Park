@@ -353,6 +353,20 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         navigateButton.alpha = 1.0
         navigateButton.isEnabled = true
         
+        whiteBlob.alpha = 0.0
+        
+        priceLabel.alpha = 0.0
+        lessPriceButton.alpha = 0.0
+        lessPriceButton.isEnabled = false
+        morePriceButton.alpha = 0.0
+        morePriceButton.isEnabled = false
+
+        walkLabel.alpha = 0.0
+        lessWalkButton.alpha = 0.0
+        lessWalkButton.isEnabled = false
+        moreWalkButton.alpha = 0.0
+        moreWalkButton.isEnabled = false
+        
         self.parkingCoordinate2D = CLLocationCoordinate2DMake(self.parkingLocationDegrees[0], self.parkingLocationDegrees[1])
         getDirections(destinationCoordinate2D: self.parkingCoordinate2D)
     }
