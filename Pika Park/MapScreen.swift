@@ -24,12 +24,15 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     @IBOutlet weak var searchImg: UIImageView!
     @IBOutlet weak var whiteBlob: UIImageView!
     
+    @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var walkLabel: UILabel!
     
+    @IBOutlet weak var lessPriceButton: UIButton!
+    @IBOutlet weak var morePriceButton: UIButton!
     
+    @IBOutlet weak var lessWalkButton: UIButton!
+    @IBOutlet weak var moreWalkButton: UIButton!
     
-    var parkingLocationDegrees: [Double] = [0.0,0.0] // received coordinates of parking spot, in format of double(latitude, longitude)
-    var parkingCoordinate2D: CLLocationCoordinate2D = CLLocationCoordinate2DMake(0.0, 0.0)
-    var waiting: Int = 1
     
     let locationManager = CLLocationManager()
     let regionMeters: Double = 1000
@@ -38,6 +41,13 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     // let geoCoder = CLGeocoder() duplicate code below
     // 13.1
     var directionsArray: [MKDirections] = []
+    
+    var parkingLocationDegrees: [Double] = [0.0,0.0] // received coordinates of parking spot, in format of double(latitude, longitude)
+    var parkingCoordinate2D: CLLocationCoordinate2D = CLLocationCoordinate2DMake(0.0, 0.0)
+    var waiting: Int = 1
+    
+    var userPrice: Int = 2
+    var userWalk: Int = 100
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -222,6 +232,9 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         whiteBlob.layer.masksToBounds = false
         whiteBlob.layer.shadowRadius = 1.0
         whiteBlob.layer.shadowOpacity = 0.1
+        
+        lessPriceButton.alpha = 0.0
+        lessWalkButton.alpha = 0.0
     }
 
     func addDestinationAnnotation(at destinationCoordinate2D: CLLocationCoordinate2D) {
@@ -375,6 +388,59 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         searchController.searchBar.delegate = self
         present(searchController, animated: true, completion: nil)
     }
+    
+    @IBAction func lessPriceButtonTapped(_ sender: UIButton) {
+        morePriceButton.alpha = 1.0
+        if self.userPrice > 0{
+            if self.userPrice > 5 {
+                self.userPrice += -5
+            } else {
+                self.userPrice += -3
+            }
+            priceLabel.text = String(self.userPrice) + " $/hr"
+        }
+        if self.userPrice == 2{
+            lessPriceButton.alpha = 0.0
+        }
+    }
+    
+    @IBAction func morePriceButtonTapped(_ sender: UIButton) {
+        lessPriceButton.alpha = 1.0
+        if self.userPrice < 20{
+            if self.userPrice > 2 {
+                self.userPrice += 5
+            } else {
+                self.userPrice += 3
+            }
+            priceLabel.text = String(self.userPrice) + " $/hr"
+        }
+        if self.userPrice == 20 {
+            morePriceButton.alpha = 0.0
+        }
+    }
+
+    @IBAction func lessWalkButtonTapped(_ sender: UIButton) {
+        moreWalkButton.alpha = 1.0
+        if self.userWalk > 100 {
+            self.userWalk += -100
+            walkLabel.text = String(self.userWalk) + "m walk"
+        }
+        if self.userWalk == 100{    // no less walk
+            lessWalkButton.alpha = 0.0
+        }
+    }
+    
+    @IBAction func moreWalkButtonTapped(_ sender: UIButton) {
+        lessWalkButton.alpha = 1.0
+        if self.userWalk < 600 {
+            self.userWalk += 100
+            walkLabel.text = String(self.userWalk) + "m walk"
+        }
+        if self.userWalk == 600{    // no more walk
+            moreWalkButton.alpha = 0.0
+        }
+    }
+    
     
 }
 
