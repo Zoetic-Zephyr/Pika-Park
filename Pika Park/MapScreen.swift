@@ -185,7 +185,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     
     func viewStyling() {
         findParkingButton.layer.cornerRadius = 5
-        centerButton.layer.cornerRadius = 5
+        centerButton.layer.cornerRadius = 0.5 * centerButton.bounds.size.width
         navigateButton.layer.cornerRadius = 5
         navigateButton.alpha = 0.0  // navi button should appear only after receiving parking coordinates from backend
         searchButton.layer.cornerRadius = 5
@@ -275,7 +275,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
             }.resume()
     }
     
-    @IBAction func goButtonTapped(_ sender: UIButton) {
+    @IBAction func findParkingButtonTapped(_ sender: UIButton) {
         pinImg.alpha = 0.0 //can also animate pin to drop down to map
         adressLabel.alpha = 0.0
         let destinationCoordinate2D = getCenterLocation(for: mapView).coordinate
@@ -303,6 +303,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         waiting = 1
         print("Check it out! I've got latitude:", NSString(format: "%.10f", (self.parkingLocationDegrees)[0]), "longitude:", NSString(format: "%.10f", (self.parkingLocationDegrees)[1]))
         
+        findParkingButton.alpha = 0.0
         navigateButton.alpha = 1.0
         
         self.parkingCoordinate2D = CLLocationCoordinate2DMake(self.parkingLocationDegrees[0], self.parkingLocationDegrees[1])
