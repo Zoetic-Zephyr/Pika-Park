@@ -22,6 +22,9 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     @IBOutlet weak var navigateButton: UIButton!
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var searchImg: UIImageView!
+    @IBOutlet weak var whiteBlob: UIImageView!
+    
+    
     
     
     var parkingLocationDegrees: [Double] = [0.0,0.0] // received coordinates of parking spot, in format of double(latitude, longitude)
@@ -187,15 +190,38 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     
     func viewStyling() {
         findParkingButton.layer.cornerRadius = 5
+        findParkingButton.layer.shadowColor = UIColor.black.cgColor
+        findParkingButton.layer.shadowOffset = CGSize(width: 0.0, height: 4.0)
+        findParkingButton.layer.masksToBounds = false
+        findParkingButton.layer.shadowRadius = 1.0
+        findParkingButton.layer.shadowOpacity = 0.2
+        
         navigateButton.layer.cornerRadius = 5
         navigateButton.alpha = 0.0  // navi button should appear only after receiving parking coordinates from backend
         navigateButton.isEnabled = false
         
         centerButton.layer.cornerRadius = 0.5 * centerButton.bounds.size.width
+        centerButton.layer.shadowColor = UIColor.black.cgColor
+        centerButton.layer.shadowOffset = CGSize(width: 0.0, height: 4.0)
+        centerButton.layer.masksToBounds = false
+        centerButton.layer.shadowRadius = 1.0
+        centerButton.layer.shadowOpacity = 0.1
+        
         searchButton.layer.cornerRadius = 5
         
-        adressLabel.layer.masksToBounds = true
-        adressLabel.layer.cornerRadius = 10
+        adressLabel.layer.masksToBounds = true  // for lables to have rounded corners, conflict with shadow...
+        adressLabel.layer.cornerRadius = 5
+        adressLabel.layer.shadowColor = UIColor.black.cgColor
+        adressLabel.layer.shadowOffset = CGSize(width: 0.0, height: 4.0)
+//        adressLabel.layer.masksToBounds = false
+        adressLabel.layer.shadowRadius = 1.0
+        adressLabel.layer.shadowOpacity = 0.1
+        
+        whiteBlob.layer.shadowColor = UIColor.black.cgColor
+        whiteBlob.layer.shadowOffset = CGSize(width: 0.0, height: 4.0)
+        whiteBlob.layer.masksToBounds = false
+        whiteBlob.layer.shadowRadius = 1.0
+        whiteBlob.layer.shadowOpacity = 0.1
     }
 
     func addDestinationAnnotation(at destinationCoordinate2D: CLLocationCoordinate2D) {
