@@ -303,6 +303,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         waiting = 1
         print("Check it out! I've got latitude:", NSString(format: "%.10f", (self.parkingLocationDegrees)[0]), "longitude:", NSString(format: "%.10f", (self.parkingLocationDegrees)[1]))
         
+        findParkingButton.alpha = 0.0
         navigateButton.alpha = 1.0
         
         self.parkingCoordinate2D = CLLocationCoordinate2DMake(self.parkingLocationDegrees[0], self.parkingLocationDegrees[1])
