@@ -51,22 +51,7 @@
                                     <color key="titleColor" red="0.12608385089999999" green="0.097610034050000002" blue="0.1139920279" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="goButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="j80-dg-nCh"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BWD-ZS-bNG">
-                                <rect key="frame" x="32" y="686" width="311" height="50"/>
-                                <color key="backgroundColor" red="0.96154564620000005" green="0.78935819860000001" blue="0.20942279699999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <rect key="contentStretch" x="0.0" y="0.0" width="0.90000000000000002" height="1"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="XjQ-67-FgQ"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
-                                <state key="normal" title="NAVI">
-                                    <color key="titleColor" red="0.12608385089999999" green="0.097610034050000002" blue="0.1139920279" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="navigateButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Y0D-OD-jFa"/>
+                                    <action selector="findParkingButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BHt-Az-Jiq"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yWl-kX-EtN">
@@ -105,6 +90,21 @@
                                 </state>
                                 <connections>
                                     <action selector="centerButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="k8f-n5-Z2S"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BWD-ZS-bNG">
+                                <rect key="frame" x="32" y="686" width="311" height="50"/>
+                                <color key="backgroundColor" red="0.96154564620000005" green="0.78935819860000001" blue="0.20942279699999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <rect key="contentStretch" x="0.0" y="0.0" width="0.90000000000000002" height="1"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="XjQ-67-FgQ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
+                                <state key="normal" title="NAVI">
+                                    <color key="titleColor" red="0.12608385089999999" green="0.097610034050000002" blue="0.1139920279" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="navigateButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Y0D-OD-jFa"/>
                                 </connections>
                             </button>
                         </subviews>
