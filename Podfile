@@ -7,4 +7,5 @@ target 'Pika Park' do
 
   # Pods for Pika Park
   pod 'RevealingSplashView'
+  pod 'SwiftMessages'
 end
