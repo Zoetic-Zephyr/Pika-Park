@@ -21,7 +21,6 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     @IBOutlet weak var pinImg: UIImageView!
     @IBOutlet weak var navigateButton: UIButton!
     @IBOutlet weak var searchButton: UIButton!
-    @IBOutlet weak var preferenceButton: UIButton!
     
     var parkingLocationDegrees: [Double] = [0.0,0.0] // received coordinates of parking spot, in format of double(latitude, longitude)
     var parkingCoordinate2D: CLLocationCoordinate2D = CLLocationCoordinate2DMake(0.0, 0.0)
@@ -56,16 +55,17 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         viewStyling()
     }
     
+    // navigation controller is no longer needed
     // the two overrides below are to hide the navigation bar on MapScreen, and show it on PreferenceScreen
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        self.navigationController?.setNavigationBarHidden(true, animated: false)
+//    }
+//
+//    override func viewDidDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        self.navigationController?.setNavigationBarHidden(false, animated: true)
+//    }
     // end two overrides
     
     
@@ -191,7 +191,6 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         
         centerButton.layer.cornerRadius = 0.5 * centerButton.bounds.size.width
         searchButton.layer.cornerRadius = 5
-        preferenceButton.layer.cornerRadius = 5
         
         adressLabel.layer.masksToBounds = true
         adressLabel.layer.cornerRadius = 10
@@ -345,11 +344,6 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         searchController.searchBar.delegate = self
         present(searchController, animated: true, completion: nil)
     }
-    
-    @IBAction func preferenceButtonTapped(_ sender: UIButton) {
-        self.performSegue(withIdentifier: "preferenceSegue", sender: self)
-    }
-    
     
 }
 
