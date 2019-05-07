@@ -99,8 +99,6 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         }
     }
     
-    
-    
     // 2.
     func checkLocationServices() {
         if CLLocationManager.locationServicesEnabled() {
@@ -176,6 +174,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
             }
         }
     }
+    
     // 12.2
     func createDirectionsRequest(from userCoordinate2D: CLLocationCoordinate2D, to destinationCoordinate2D: CLLocationCoordinate2D) -> MKDirections.Request {
 //        let destinationCoordinate       = getCenterLocation(for: mapView).coordinate
@@ -246,11 +245,12 @@ class MapScreen: UIViewController, UISearchBarDelegate {
 
     func addDestinationAnnotation(at destinationCoordinate2D: CLLocationCoordinate2D) {
         let destinationAnnotation = MKPointAnnotation()
-        destinationAnnotation.subtitle = "Your Spot"
+        destinationAnnotation.title = "Your Spot"
 //        destinationAnnotation.coordinate = getCenterLocation(for: mapView).coordinate
         destinationAnnotation.coordinate = destinationCoordinate2D
         mapView.addAnnotation(destinationAnnotation)
     }
+    
     // resond to user tap "search" button
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // Ignore user
@@ -309,7 +309,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     }
     
     func fetchParkingData(destinationX: Double, destinationY: Double, price: Int, eDistance: Double, currentX: Double, currentY: Double) {
-        let url = URL(string: "http://10.16.220.73:8080/\(destinationX)/\(destinationY)/\(price)/\(eDistance)/\(currentX)/\(currentY)")!
+        let url = URL(string: "http://10.20.64.21:8080/\(destinationX)/\(destinationY)/\(price)/\(eDistance)/\(currentX)/\(currentY)")!
         
         URLSession.shared.dataTask(with: url) { data, response, error
             in
@@ -340,27 +340,64 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         SwiftMessages.show(config: config, view: messageView)
     }
     
-    static func successCentered() {
-        let messageView: MessageView = MessageView.viewFromNib(layout: .centeredView)
-        messageView.configureBackgroundView(width: 250)
-        messageView.configureContent(title: "Pika!", body: "Pikachu find you a spot", iconImage: UIImage(named: "pikachu-success"), iconText: nil, buttonImage: nil, buttonTitle: "Show route") { _ in
-            SwiftMessages.hide()
-        }
-        messageView.backgroundView.backgroundColor = UIColor.init(white: 0.97, alpha: 1)
-        messageView.backgroundView.layer.cornerRadius = 10
-        var config = SwiftMessages.defaultConfig
-        config.presentationStyle = .center
-        config.duration = .forever
-        config.dimMode = .blur(style: .dark, alpha: 1, interactive: true)
-        config.presentationContext  = .window(windowLevel: UIWindow.Level.statusBar)
-        SwiftMessages.show(config: config, view: messageView)
+    static func successTop() {
+        let success = MessageView.viewFromNib(layout: .cardView)
+        success.configureTheme(.success)
+        success.configureDropShadow()
+        success.configureContent(title: "Pika!", body: "Pikachu find you a spot")
+        success.button?.isHidden = true
+        var successConfig = SwiftMessages.defaultConfig
+        successConfig.presentationStyle = .top
+        successConfig.presentationContext = .window(windowLevel: UIWindow.Level.normal)
+        SwiftMessages.show(config: successConfig, view: success)
     }
+    
+//    static func successCentered() {
+//        let messageView: MessageView = MessageView.viewFromNib(layout: .centeredView)
+//        messageView.configureBackgroundView(width: 250)
+//        messageView.configureContent(title: "Pika!", body: "Pikachu find you a spot", iconImage: UIImage(named: "pikachu-success"), iconText: nil, buttonImage: nil, buttonTitle: "Show route") { _ in
+//            SwiftMessages.hide()
+//        }
+//        messageView.backgroundView.backgroundColor = UIColor.init(white: 0.97, alpha: 1)
+//        messageView.backgroundView.layer.cornerRadius = 10
+//        var config = SwiftMessages.defaultConfig
+//        config.presentationStyle = .center
+//        config.duration = .forever
+//        config.dimMode = .blur(style: .dark, alpha: 1, interactive: true)
+//        config.presentationContext  = .window(windowLevel: UIWindow.Level.statusBar)
+//        SwiftMessages.show(config: config, view: messageView)
+//    }
+    
     
     @IBAction func findParkingButtonTapped(_ sender: UIButton) {
         pinImg.alpha = 0.0 //can also animate pin to drop down to map
         adressLabel.alpha = 0.0
         searchImg.alpha = 0.0
         searchButton.isEnabled = false
+        
+        UIView.animate(withDuration: 0.2) {
+            self.findParkingButton.alpha = 0.0
+        }
+        findParkingButton.isEnabled = false
+        
+        UIView.animate(withDuration: 0.4) {
+            self.navigateButton.alpha = 1.0
+        }
+        navigateButton.isEnabled = true
+        
+        whiteBlob.alpha = 0.0
+        
+        priceLabel.alpha = 0.0
+        lessPriceButton.alpha = 0.0
+        lessPriceButton.isEnabled = false
+        morePriceButton.alpha = 0.0
+        morePriceButton.isEnabled = false
+        
+        walkLabel.alpha = 0.0
+        lessWalkButton.alpha = 0.0
+        lessWalkButton.isEnabled = false
+        moreWalkButton.alpha = 0.0
+        moreWalkButton.isEnabled = false
         
         let destinationCoordinate2D = getCenterLocation(for: mapView).coordinate
         let destinationX = destinationCoordinate2D.latitude
@@ -388,37 +425,13 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         
         if self.parkingLocationDegrees[0] == -999.0 {
             MapScreen.failCentered()
+            centerButtonTapped(centerButton)   // error in this line
         } else {
-            MapScreen.successCentered()
+            MapScreen.successTop()
+//            MapScreen.successCenter()
         }
         
         print("Check it out! I've got latitude:", NSString(format: "%.10f", (self.parkingLocationDegrees)[0]), "longitude:", NSString(format: "%.10f", (self.parkingLocationDegrees)[1]))
-        
-        UIView.animate(withDuration: 0.2) {
-            self.findParkingButton.alpha = 0.0
-        }
-//        findParkingButton.alpha = 0.0
-        findParkingButton.isEnabled = false
-
-        UIView.animate(withDuration: 0.4) {
-            self.navigateButton.alpha = 1.0
-        }
-//        navigateButton.alpha = 1.0
-        navigateButton.isEnabled = true
-        
-        whiteBlob.alpha = 0.0
-        
-        priceLabel.alpha = 0.0
-        lessPriceButton.alpha = 0.0
-        lessPriceButton.isEnabled = false
-        morePriceButton.alpha = 0.0
-        morePriceButton.isEnabled = false
-
-        walkLabel.alpha = 0.0
-        lessWalkButton.alpha = 0.0
-        lessWalkButton.isEnabled = false
-        moreWalkButton.alpha = 0.0
-        moreWalkButton.isEnabled = false
         
         self.parkingCoordinate2D = CLLocationCoordinate2DMake(self.parkingLocationDegrees[0], self.parkingLocationDegrees[1])
         getDirections(destinationCoordinate2D: self.parkingCoordinate2D)
@@ -435,7 +448,6 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         searchImg.alpha = 1.0
         searchButton.isEnabled = true
         
-        self.parkingLocationDegrees = [0.0, 0.0]    // reset parking coordinates
         navigateButton.alpha = 0.0 // hide navi button
         navigateButton.isEnabled = false
         
@@ -480,6 +492,8 @@ class MapScreen: UIViewController, UISearchBarDelegate {
             lessWalkButton.isEnabled = true
         }
         
+        self.parkingLocationDegrees = [0.0, 0.0]    // reset parking coordinates
+        
 //        MapScreen.successCentered()
 //        MapScreen.failCentered()
     }
@@ -506,6 +520,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         
         morePriceButton.alpha = 1.0
         morePriceButton.isEnabled = true
+        
         if self.userPrice > 0{
             if self.userPrice > 5 {
                 self.userPrice += -5
@@ -525,6 +540,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         
         lessPriceButton.alpha = 1.0
         lessPriceButton.isEnabled = true
+        
         if self.userPrice < 20{
             if self.userPrice > 2 {
                 self.userPrice += 5
@@ -599,7 +615,6 @@ extension MapScreen: MKMapViewDelegate {
         
         // 11.5
         guard let previousLocation = self.previousLocation else { return }
-        
         
         // 11.1
         guard center.distance(from: previousLocation) > 10 else { return }
