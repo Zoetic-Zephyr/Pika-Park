@@ -370,6 +370,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     
     
     @IBAction func findParkingButtonTapped(_ sender: UIButton) {
+        mapView.removeAnnotations(mapView.annotations)
         pinImg.alpha = 0.0 //can also animate pin to drop down to map
         adressLabel.alpha = 0.0
         searchImg.alpha = 0.0
