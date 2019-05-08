@@ -174,11 +174,25 @@
                                     <action selector="morePriceButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zdw-jQ-Zdg"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ns4-A7-jc9">
+                                <rect key="frame" x="32" y="686" width="311" height="50"/>
+                                <color key="backgroundColor" red="0.76478832960128784" green="0.25826716423034668" blue="0.24468684196472168" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <rect key="contentStretch" x="0.0" y="0.0" width="0.90000000000000002" height="1"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="IU5-HV-Loa"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
+                                <state key="normal" title="Leave Spot">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="leaveSpotButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YX6-xJ-ptz"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="uuL-jj-jUA" secondAttribute="trailing" constant="40" id="1Wd-Hh-W8v"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="BWD-ZS-bNG" secondAttribute="trailing" constant="32" id="1qY-qt-fn7"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="BWD-ZS-bNG" secondAttribute="bottom" constant="42" id="3Fs-IK-CRj"/>
                             <constraint firstItem="zyT-69-3KE" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="3ka-H3-QGX"/>
                             <constraint firstItem="Mqe-iy-8cE" firstAttribute="top" secondItem="zyT-69-3KE" secondAttribute="bottom" constant="11" id="4IN-4m-hPL"/>
@@ -186,6 +200,7 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="DgV-ZT-6JK" secondAttribute="bottom" constant="42" id="6RF-0q-4Hj"/>
                             <constraint firstItem="Mqe-iy-8cE" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="87X-Vo-wU1"/>
                             <constraint firstItem="DgV-ZT-6JK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="32" id="8ec-CO-Vt2"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Ns4-A7-jc9" secondAttribute="bottom" constant="42" id="BrA-aA-Wra"/>
                             <constraint firstItem="Mqe-iy-8cE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Brj-S6-S23"/>
                             <constraint firstItem="yWl-kX-EtN" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Ffy-eY-o1g"/>
                             <constraint firstItem="Mqe-iy-8cE" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-20" id="Fug-BG-XFk"/>
@@ -201,12 +216,15 @@
                             <constraint firstItem="Mqe-iy-8cE" firstAttribute="top" secondItem="WdZ-eG-igD" secondAttribute="bottom" constant="12" id="YY3-TA-78Q"/>
                             <constraint firstItem="zWL-sJ-TBQ" firstAttribute="leading" secondItem="zyT-69-3KE" secondAttribute="trailing" constant="10" id="Z06-aR-4a6"/>
                             <constraint firstItem="mwB-O9-IW1" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="50" id="ayd-qj-jmf"/>
+                            <constraint firstItem="BWD-ZS-bNG" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="32" id="be8-us-ss0"/>
                             <constraint firstItem="yQn-tX-sXO" firstAttribute="leading" secondItem="kIl-tO-kdk" secondAttribute="trailing" constant="19.333333333333343" id="bt2-PH-6by"/>
                             <constraint firstItem="Mqe-iy-8cE" firstAttribute="top" secondItem="zWL-sJ-TBQ" secondAttribute="bottom" constant="12" id="btc-zd-8Q3"/>
                             <constraint firstItem="kIl-tO-kdk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="fSO-XW-xEd"/>
+                            <constraint firstItem="Ns4-A7-jc9" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="32" id="fX9-bC-vw6"/>
                             <constraint firstItem="DgV-ZT-6JK" firstAttribute="top" secondItem="5WO-23-1eY" secondAttribute="bottom" constant="15" id="g60-8E-dPZ"/>
                             <constraint firstItem="drl-pt-hX9" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="iXP-42-m6L"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="5WO-23-1eY" secondAttribute="trailing" constant="36" id="oIY-gf-iVK"/>
+                            <constraint firstItem="Ns4-A7-jc9" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="q53-vz-xVM"/>
                             <constraint firstItem="WA9-hD-qqD" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="rdK-Qj-Hub"/>
                             <constraint firstItem="BWD-ZS-bNG" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="tYZ-dJ-42p"/>
                             <constraint firstItem="mwB-O9-IW1" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="vNk-6n-HZ5"/>
@@ -222,6 +240,7 @@
                         <outlet property="adressLabel" destination="mwB-O9-IW1" id="C1c-hR-vua"/>
                         <outlet property="centerButton" destination="5WO-23-1eY" id="HMh-zL-ERp"/>
                         <outlet property="findParkingButton" destination="DgV-ZT-6JK" id="G87-7H-caT"/>
+                        <outlet property="leaveSpotButton" destination="Ns4-A7-jc9" id="eTR-fB-Wzl"/>
                         <outlet property="lessPriceButton" destination="eSP-AX-YXu" id="PQ7-RQ-2wS"/>
                         <outlet property="lessWalkButton" destination="WdZ-eG-igD" id="bQj-97-QZx"/>
                         <outlet property="mapView" destination="WA9-hD-qqD" id="1uo-4k-diD"/>
