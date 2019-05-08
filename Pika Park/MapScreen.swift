@@ -507,6 +507,9 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         let placemark = MKPlacemark(coordinate: self.parkingCoordinate2D)
         let mapItem = MKMapItem(placemark: placemark)
         mapItem.name = "The spot, just for you!"
+        
+        centerButtonTapped(centerButton)
+        
         mapItem.openInMaps(launchOptions: options)
     }
     
