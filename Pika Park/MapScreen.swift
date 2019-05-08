@@ -34,6 +34,9 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     @IBOutlet weak var lessWalkButton: UIButton!
     @IBOutlet weak var moreWalkButton: UIButton!
     
+    @IBOutlet weak var leaveSpotButton: UIButton!
+    
+    
     
     let locationManager = CLLocationManager()
     let regionMeters: Double = 1000
@@ -169,8 +172,8 @@ class MapScreen: UIViewController, UISearchBarDelegate {
             for route in response.routes {
 //                let steps = route.steps // create an additional tableView for displaying the direction steps, extend beyond the tutorial
                 self.mapView.addOverlay(route.polyline)
-                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true) // resize the view of the map to fit the route
-                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, edgePadding: UIEdgeInsets(top: 50.0, left: 50.0, bottom: 50.0, right: 50.0), animated: true)
+//                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true) // resize the view of the map to fit the route
+                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, edgePadding: UIEdgeInsets(top: 200.0, left: 50.0, bottom: 200.0, right: 50.0), animated: true)
             }
         }
     }
@@ -214,6 +217,15 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         navigateButton.layer.masksToBounds = false
         navigateButton.layer.shadowRadius = 1.0
         navigateButton.layer.shadowOpacity = 0.2
+        
+        leaveSpotButton.layer.cornerRadius = 5
+        leaveSpotButton.alpha = 0.0  // leave button should appear only after opening Maps
+        leaveSpotButton.isEnabled = false
+        leaveSpotButton.layer.shadowColor = UIColor.black.cgColor
+        leaveSpotButton.layer.shadowOffset = CGSize(width: 0.0, height: 4.0)
+        leaveSpotButton.layer.masksToBounds = false
+        leaveSpotButton.layer.shadowRadius = 1.0
+        leaveSpotButton.layer.shadowOpacity = 0.2
         
         centerButton.layer.cornerRadius = 0.5 * centerButton.bounds.size.width
         centerButton.layer.shadowColor = UIColor.black.cgColor
@@ -449,6 +461,9 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         searchImg.alpha = 1.0
         searchButton.isEnabled = true
         
+        leaveSpotButton.alpha = 0.0 // hide leave button
+        leaveSpotButton.isEnabled = false
+        
         navigateButton.alpha = 0.0 // hide navi button
         navigateButton.isEnabled = false
         
@@ -508,9 +523,15 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         let mapItem = MKMapItem(placemark: placemark)
         mapItem.name = "The spot, just for you!"
         
-        centerButtonTapped(centerButton)
-        
         mapItem.openInMaps(launchOptions: options)
+        
+//        centerButtonTapped(centerButton)
+        
+        navigateButton.alpha = 0.0
+        navigateButton.isEnabled = false
+        
+        leaveSpotButton.alpha = 1.0
+        leaveSpotButton.isEnabled = true
     }
     
     @IBAction func searchButtonTapped(_ sender: UIButton) {
@@ -589,6 +610,12 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         }
     }
     
+    @IBAction func leaveSpotButtonTapped(_ sender: UIButton) {
+        sender.pulsate2()
+
+        centerButtonTapped(centerButton)
+    }
+    
     
 }
 
@@ -656,7 +683,7 @@ extension MapScreen: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay as! MKPolyline)
         renderer.strokeColor = UIColor(red: 0.4352941176, green: 0.5529411765, blue: 0.9882352941, alpha: 1.0)
-        renderer.lineWidth = 2.0
+        renderer.lineWidth = 2.2
         
         return renderer
     }
