@@ -102,6 +102,14 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         }
     }
     
+    
+    func centerViewOnUserLocationChina() {
+        if let location = locationManager.location?.coordinate {
+            let region = MKCoordinateRegion.init(center: mapView.userLocation.location?.coordinate ?? CLLocationCoordinate2DMake(31.2256976,121.5316894), latitudinalMeters: regionMeters, longitudinalMeters: regionMeters)
+            mapView.setRegion(region, animated: true)
+        }
+    }
+    
     // 2.
     func checkLocationServices() {
         if CLLocationManager.locationServicesEnabled() {
@@ -137,7 +145,8 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     func startTrackingUserLocation() {
         // 6.
         mapView.showsUserLocation = true
-        centerViewOnUserLocation()
+//        centerViewOnUserLocation()
+        centerViewOnUserLocationChina()
         locationManager.startUpdatingLocation()
         // 11.2
         previousLocation = getCenterLocation(for: mapView)
@@ -321,7 +330,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     }
     
     func fetchParkingData(destinationX: Double, destinationY: Double, price: Int, eDistance: Double, currentX: Double, currentY: Double) {
-        let url = URL(string: "http://10.20.64.21:8080/\(destinationX)/\(destinationY)/\(price)/\(eDistance)/\(currentX)/\(currentY)")!
+        let url = URL(string: "http://10.209.13.213:8080/\(destinationX)/\(destinationY)/\(price)/\(eDistance)/\(currentX)/\(currentY)")!
         
         URLSession.shared.dataTask(with: url) { data, response, error
             in
@@ -455,7 +464,8 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         
         mapView.removeOverlays(mapView.overlays)
         mapView.removeAnnotations(mapView.annotations)
-        centerViewOnUserLocation()
+//        centerViewOnUserLocation()
+        centerViewOnUserLocationChina()
         pinImg.alpha = 1.0
         adressLabel.alpha = 1.0
         searchImg.alpha = 1.0
