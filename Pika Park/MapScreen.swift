@@ -53,6 +53,12 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     var userPrice: Int = 2
     var userWalk: Int = 100
     
+    var userId: Int = -1
+    
+    var timer = Timer()
+//    var parkingLocationDegrees = "[0.0, 0.0]"
+    var nullCount = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -320,8 +326,14 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         }
     }
     
-    func fetchParkingData(destinationX: Double, destinationY: Double, price: Int, eDistance: Double, currentX: Double, currentY: Double) {
-        let url = URL(string: "http://10.20.64.21:8080/\(destinationX)/\(destinationY)/\(price)/\(eDistance)/\(currentX)/\(currentY)")!
+    @objc func getAssignedSpot(){
+        guard let userCoordinate2D = locationManager.location?.coordinate else {
+            // inform user we don't have their current location
+            return
+        }
+        let currentX = Double(userCoordinate2D.latitude)
+        let currentY = Double(userCoordinate2D.longitude)
+        let url = URL(string: "http://192.168.3.6:8000/api/drivers/\(self.userId)/\(currentY)/\(currentX)")!
         
         URLSession.shared.dataTask(with: url) { data, response, error
             in
@@ -329,11 +341,119 @@ class MapScreen: UIViewController, UISearchBarDelegate {
                 print(error?.localizedDescription ?? "Unknown error")
                 return
             }
-            let results = String(data: data, encoding: String.Encoding.utf8) ?? "Unable to parse JSON response.\n"
-            self.parkingLocationDegrees[0] = Double(results.split(separator: ",")[0])!
-            self.parkingLocationDegrees[1] = Double(results.split(separator: ",")[1])!
-            self.waiting = 0
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
+                if self.nullCount > 5 {
+                    print("Lost Spot")
+                    print("Oops, there seems no spot available for you > <")
+                    // display error message
+                    return
+                }
+                self.nullCount += 1
+                print("Invalid Spot")
+                // do nothing
+                return
+            }
+            
+            var responseString = String(data: data, encoding: String.Encoding.utf8) ?? "Unable to parse JSON response.\n"
+            responseString = responseString.replacingOccurrences(of: "\\", with: "", options: NSString.CompareOptions.literal, range: nil)
+            responseString = responseString.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+            responseString = responseString.replacingOccurrences(of: "[", with: "", options: NSString.CompareOptions.literal, range: nil)
+            responseString = responseString.replacingOccurrences(of: "]", with: "", options: NSString.CompareOptions.literal, range: nil)
+            let tmpResponseString = [Double(responseString.split(separator: ",")[0])!, Double(responseString.split(separator: ",")[1])!]
+            if (tmpResponseString != self.parkingLocationDegrees){
+                self.parkingLocationDegrees = tmpResponseString
+                // Update in-app route
+                self.nullCount = 0
+                print("Tracked Changes")
+                print("Spot reassigned!")
+            }else{
+                self.nullCount = 0
+                print("Blocked")
+                // do nothing or also update
+            }
+            
             }.resume()
+    }
+    
+    
+    func scheduledTimerWithTimeInterval(){
+        // Scheduling timer to Call the function "updateCounting" with the interval of 1 seconds
+        self.timer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.getAssignedSpot), userInfo: nil, repeats: true)
+    }
+    
+    func fetchParkingData(destinationX: Double, destinationY: Double, price: Int, eDistance: Double, currentX: Double, currentY: Double) {
+        
+        
+        let json: [String: Any] = ["name": "tester",
+                                   "location": [currentY,currentX],
+                                   "destination": [destinationY, destinationX],
+                                   "walkDist": eDistance,
+                                   "price": price,
+                                   "prefList":[],
+                                   "spotId":-1]
+        
+        let jsonData = try? JSONSerialization.data(withJSONObject: json)
+        
+        // create post request
+        let url = URL(string: "http://192.168.3.6:8000/api/create-driver")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        // insert json data to the request
+        request.httpBody = jsonData
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                print(error?.localizedDescription ?? "No data")
+                return
+            }
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
+                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                print("response = \(String(describing: response))")
+                return
+            }
+            let results = String(data: data, encoding: String.Encoding.utf8) ?? "Unable to parse JSON response.\n"
+            print(results)
+            self.userId = Int(results)!
+        }
+        
+        task.resume()
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+//        let url = URL(string: "http://10.20.64.21:8080/\(destinationX)/\(destinationY)/\(price)/\(eDistance)/\(currentX)/\(currentY)")!
+//
+//        URLSession.shared.dataTask(with: url) { data, response, error
+//            in
+//            guard let data = data else {
+//                print(error?.localizedDescription ?? "Unknown error")
+//                return
+//            }
+//            let results = String(data: data, encoding: String.Encoding.utf8) ?? "Unable to parse JSON response.\n"
+//            self.parkingLocationDegrees[0] = Double(results.split(separator: ",")[0])!
+//            self.parkingLocationDegrees[1] = Double(results.split(separator: ",")[1])!
+//            self.waiting = 0
+//            }.resume()
     }
     
     static func failCentered() {
@@ -428,6 +548,17 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         let eDistance = Double(self.userWalk) / 1000
         
         fetchParkingData(destinationX: destinationX, destinationY: destinationY, price: price, eDistance: eDistance, currentX: currentX, currentY: currentY)
+        
+        scheduledTimerWithTimeInterval()
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         //A function check whether we get response
         while waiting == 1 {
