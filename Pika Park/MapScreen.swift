@@ -53,6 +53,8 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     var userPrice: Int = 2
     var userWalk: Int = 100
     
+    var redirectCounter: Int = 0
+    
     var userId: Int = -1
     
     var timer = Timer()
@@ -344,13 +346,12 @@ class MapScreen: UIViewController, UISearchBarDelegate {
             if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
                 if self.nullCount > 5 {
                     print("Lost Spot")
-                    print("Oops, there seems no spot available for you > <")
-                    // display error message
+                    MapScreen.failCentered()
+                    self.centerButtonTapped(self.centerButton)
                     return
                 }
                 self.nullCount += 1
                 print("Invalid Spot")
-                // do nothing
                 return
             }
             
@@ -359,18 +360,28 @@ class MapScreen: UIViewController, UISearchBarDelegate {
             responseString = responseString.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
             responseString = responseString.replacingOccurrences(of: "[", with: "", options: NSString.CompareOptions.literal, range: nil)
             responseString = responseString.replacingOccurrences(of: "]", with: "", options: NSString.CompareOptions.literal, range: nil)
-            let tmpResponseString = [Double(responseString.split(separator: ",")[0])!, Double(responseString.split(separator: ",")[1])!]
-            if (tmpResponseString != self.parkingLocationDegrees){
-                self.parkingLocationDegrees = tmpResponseString
-                // Update in-app route
+            let responseArray = [Double(responseString.split(separator: ",")[0])!, Double(responseString.split(separator: ",")[1])!]
+            
+            if (responseArray != self.parkingLocationDegrees) {
+                if (self.redirectCounter == 0) {
+                    MapScreen.successTop()
+                } else {
+                    MapScreen.warningTop()
+                }
+                self.parkingLocationDegrees = responseArray
                 self.nullCount = 0
+                self.redirectCounter += 1
                 print("Tracked Changes")
                 print("Spot reassigned!")
-            }else{
+            } else {
                 self.nullCount = 0
                 print("Blocked")
-                // do nothing or also update
             }
+            
+            // Update in-app route
+            print("Check it out! I've got latitude:", NSString(format: "%.10f", (self.parkingLocationDegrees)[0]), "longitude:", NSString(format: "%.10f", (self.parkingLocationDegrees)[1]))
+            self.parkingCoordinate2D = CLLocationCoordinate2DMake(self.parkingLocationDegrees[0], self.parkingLocationDegrees[1])
+            self.getDirections(destinationCoordinate2D: self.parkingCoordinate2D)
             
             }.resume()
     }
@@ -484,6 +495,19 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         SwiftMessages.show(config: successConfig, view: success)
     }
     
+    static func warningTop() {
+        let warning = MessageView.viewFromNib(layout: .cardView)
+        warning.configureTheme(.warning)
+        warning.configureDropShadow()
+        warning.configureContent(title: "Pika!", body: "Let's go to another spot")
+        warning.button?.isHidden = true
+        var warningConfig = SwiftMessages.defaultConfig
+        warningConfig.presentationStyle = .top
+        warningConfig.presentationContext = .window(windowLevel: UIWindow.Level.normal)
+        SwiftMessages.show(config: warningConfig, view: warning)
+    }
+    
+    
 //    static func successCentered() {
 //        let messageView: MessageView = MessageView.viewFromNib(layout: .centeredView)
 //        messageView.configureBackgroundView(width: 250)
@@ -550,35 +574,6 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         fetchParkingData(destinationX: destinationX, destinationY: destinationY, price: price, eDistance: eDistance, currentX: currentX, currentY: currentY)
         
         scheduledTimerWithTimeInterval()
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        //A function check whether we get response
-        while waiting == 1 {
-//            print("Waiting...")
-        }
-        
-        waiting = 1
-        
-        if self.parkingLocationDegrees[0] == -999.0 {
-            MapScreen.failCentered()
-            centerButtonTapped(centerButton)   // error in this line
-        } else {
-            MapScreen.successTop()
-//            MapScreen.successCenter()
-        }
-        
-        print("Check it out! I've got latitude:", NSString(format: "%.10f", (self.parkingLocationDegrees)[0]), "longitude:", NSString(format: "%.10f", (self.parkingLocationDegrees)[1]))
-        
-        self.parkingCoordinate2D = CLLocationCoordinate2DMake(self.parkingLocationDegrees[0], self.parkingLocationDegrees[1])
-        getDirections(destinationCoordinate2D: self.parkingCoordinate2D)
     }
     
     @IBAction func centerButtonTapped(_ sender: UIButton) {
@@ -640,6 +635,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         }
         
         self.parkingLocationDegrees = [0.0, 0.0]    // reset parking coordinates
+        self.redirectCounter = 0    // reset redirectCounter
         
 //        MapScreen.successCentered()
 //        MapScreen.failCentered()
