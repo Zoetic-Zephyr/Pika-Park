@@ -80,6 +80,9 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         // 5.
         checkLocationServices()
         viewStyling()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(quitQueue), name: UIApplication.didEnterBackgroundNotification, object: nil)
+
     }
     
     // navigation controller is no longer needed
@@ -331,7 +334,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         }
     }
     
-    func quitQueue(){
+    @objc func quitQueue(){
         let url = URL(string: "http://10.209.13.213:8000/api/drivers/\(self.userId)")!
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
@@ -580,7 +583,6 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     }
     
     @IBAction func centerButtonTapped(_ sender: UIButton) {
-        self.quitQueue()
         sender.pulsate()    // pulse animation
         
         mapView.removeOverlays(mapView.overlays)
@@ -643,6 +645,8 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         self.redirectCounter = 0    // reset redirectCounter
         self.nullCount = 0
         
+        self.quitQueue()
+        
 //        MapScreen.successCentered()
 //        MapScreen.failCentered()
     }
@@ -660,11 +664,13 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         
 //        centerButtonTapped(centerButton)
         
-        navigateButton.alpha = 0.0
-        navigateButton.isEnabled = false
+        // navigateButton is left on screen because of the same reason below...
+//        navigateButton.alpha = 0.0
+//        navigateButton.isEnabled = false
         
-        leaveSpotButton.alpha = 1.0
-        leaveSpotButton.isEnabled = true
+        // leaveSpotButton disabled because someonw forced me to do it
+        leaveSpotButton.alpha = 0.0
+        leaveSpotButton.isEnabled = false
     }
     
     @IBAction func searchButtonTapped(_ sender: UIButton) {
