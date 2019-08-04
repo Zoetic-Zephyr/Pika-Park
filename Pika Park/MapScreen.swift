@@ -384,34 +384,41 @@ class MapScreen: UIViewController, UISearchBarDelegate {
             }
             
             var responseString = String(data: data, encoding: String.Encoding.utf8) ?? "Unable to parse JSON response.\n"
-            responseString = responseString.replacingOccurrences(of: "\\", with: "", options: NSString.CompareOptions.literal, range: nil)
-            responseString = responseString.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
-            responseString = responseString.replacingOccurrences(of: "[", with: "", options: NSString.CompareOptions.literal, range: nil)
-            responseString = responseString.replacingOccurrences(of: "]", with: "", options: NSString.CompareOptions.literal, range: nil)
-            let responseArray = [Double(responseString.split(separator: ",")[1])!, Double(responseString.split(separator: ",")[0])!]
-            
-            if (responseArray != self.parkingLocationDegrees) {
-                if (self.redirectCounter == 0) {
-                    DispatchQueue.main.async {
-                        MapScreen.successTop()
-                        print("Spot assigned!")
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        MapScreen.warningTop()
-                        print("Spot reassigned!")
-                    }
-                }
-                // Update in-app route
-                self.parkingLocationDegrees = responseArray
-                self.parkingCoordinate2D = CLLocationCoordinate2DMake(self.parkingLocationDegrees[0], self.parkingLocationDegrees[1])
-                DispatchQueue.main.async { self.getDirections(destinationCoordinate2D: self.parkingCoordinate2D) }
+            if (responseString != "taken") {
+                responseString = responseString.replacingOccurrences(of: "\\", with: "", options: NSString.CompareOptions.literal, range: nil)
+                responseString = responseString.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+                responseString = responseString.replacingOccurrences(of: "[", with: "", options: NSString.CompareOptions.literal, range: nil)
+                responseString = responseString.replacingOccurrences(of: "]", with: "", options: NSString.CompareOptions.literal, range: nil)
+                let responseArray = [Double(responseString.split(separator: ",")[1])!, Double(responseString.split(separator: ",")[0])!]
                 
-                self.nullCount = 0
-                self.redirectCounter += 1
+                if (responseArray != self.parkingLocationDegrees) {
+                    if (self.redirectCounter == 0) {
+                        DispatchQueue.main.async {
+                            MapScreen.successTop()
+                            print("Spot assigned!")
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            MapScreen.warningTop()
+                            print("Spot reassigned!")
+                        }
+                    }
+                    // Update in-app route
+                    self.parkingLocationDegrees = responseArray
+                    self.parkingCoordinate2D = CLLocationCoordinate2DMake(self.parkingLocationDegrees[0], self.parkingLocationDegrees[1])
+                    DispatchQueue.main.async { self.getDirections(destinationCoordinate2D: self.parkingCoordinate2D) }
+                    
+                    self.nullCount = 0
+                    self.redirectCounter += 1
+                } else {
+                    self.nullCount = 0
+                    print("Blocked")
+                }
             } else {
-                self.nullCount = 0
-                print("Blocked")
+                DispatchQueue.main.async {
+                    MapScreen.successCentered()
+                    self.centerButtonTapped(self.centerButton)
+                }
             }
 //            print("Check it out! I've got latitude:", NSString(format: "%.10f", (self.parkingLocationDegrees)[0]), "longitude:", NSString(format: "%.10f", (self.parkingLocationDegrees)[1]))
             }.resume()
@@ -504,21 +511,21 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     }
     
     
-//    static func successCentered() {
-//        let messageView: MessageView = MessageView.viewFromNib(layout: .centeredView)
-//        messageView.configureBackgroundView(width: 250)
-//        messageView.configureContent(title: "Pika!", body: "Pikachu find you a spot", iconImage: UIImage(named: "pikachu-success"), iconText: nil, buttonImage: nil, buttonTitle: "Show route") { _ in
-//            SwiftMessages.hide()
-//        }
-//        messageView.backgroundView.backgroundColor = UIColor.init(white: 0.97, alpha: 1)
-//        messageView.backgroundView.layer.cornerRadius = 10
-//        var config = SwiftMessages.defaultConfig
-//        config.presentationStyle = .center
-//        config.duration = .forever
-//        config.dimMode = .blur(style: .dark, alpha: 1, interactive: true)
-//        config.presentationContext  = .window(windowLevel: UIWindow.Level.statusBar)
-//        SwiftMessages.show(config: config, view: messageView)
-//    }
+    static func successCentered() {
+        let messageView: MessageView = MessageView.viewFromNib(layout: .centeredView)
+        messageView.configureBackgroundView(width: 250)
+        messageView.configureContent(title: "Pika!", body: "The spot is yours!", iconImage: UIImage(named: "pikachu-success"), iconText: nil, buttonImage: nil, buttonTitle: "Pika pika!") { _ in
+            SwiftMessages.hide()
+        }
+        messageView.backgroundView.backgroundColor = UIColor.init(white: 0.97, alpha: 1)
+        messageView.backgroundView.layer.cornerRadius = 10
+        var config = SwiftMessages.defaultConfig
+        config.presentationStyle = .center
+        config.duration = .forever
+        config.dimMode = .blur(style: .dark, alpha: 1, interactive: true)
+        config.presentationContext  = .window(windowLevel: UIWindow.Level.statusBar)
+        SwiftMessages.show(config: config, view: messageView)
+    }
     
     
     @IBAction func findParkingButtonTapped(_ sender: UIButton) {
