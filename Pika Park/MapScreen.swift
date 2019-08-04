@@ -175,8 +175,10 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         //12.4
         directions.calculate { [unowned self] (response, error) in
             //TODO: handel error if needed
-            guard let response = response else { return } // TODO: show response not available in alert
-            
+            guard let response = response else {
+                print("No fking response!")
+                return
+            } // TODO: show response not available in alert
             for route in response.routes {
 //                let steps = route.steps // create an additional tableView for displaying the direction steps, extend beyond the tutorial
                 self.mapView.addOverlay(route.polyline)
@@ -204,6 +206,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     // 13.2
     func resetMapView(withNew directions: MKDirections) {
         mapView.removeOverlays(mapView.overlays)
+        mapView.removeAnnotations(mapView.annotations)  // added to remove outdated "your spot"
         directionsArray.append(directions)
         let _ = directionsArray.map{ $0.cancel() }
         directionsArray.removeAll()
@@ -335,7 +338,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         }
         let currentX = Double(userCoordinate2D.latitude)
         let currentY = Double(userCoordinate2D.longitude)
-        let url = URL(string: "http://192.168.3.6:8000/api/drivers/\(self.userId)/\(currentY)/\(currentX)")!
+        let url = URL(string: "http://10.209.13.213:8000/api/drivers/\(self.userId)/\(currentY)/\(currentX)")!
         
         URLSession.shared.dataTask(with: url) { data, response, error
             in
@@ -344,10 +347,12 @@ class MapScreen: UIViewController, UISearchBarDelegate {
                 return
             }
             if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
-                if self.nullCount > 5 {
+                if self.nullCount > 3 {
                     print("Lost Spot")
-                    MapScreen.failCentered()
-                    self.centerButtonTapped(self.centerButton)
+                    DispatchQueue.main.async {
+                        MapScreen.failCentered()
+                        self.centerButtonTapped(self.centerButton)
+                    }
                     return
                 }
                 self.nullCount += 1
@@ -360,36 +365,39 @@ class MapScreen: UIViewController, UISearchBarDelegate {
             responseString = responseString.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
             responseString = responseString.replacingOccurrences(of: "[", with: "", options: NSString.CompareOptions.literal, range: nil)
             responseString = responseString.replacingOccurrences(of: "]", with: "", options: NSString.CompareOptions.literal, range: nil)
-            let responseArray = [Double(responseString.split(separator: ",")[0])!, Double(responseString.split(separator: ",")[1])!]
+            let responseArray = [Double(responseString.split(separator: ",")[1])!, Double(responseString.split(separator: ",")[0])!]
             
             if (responseArray != self.parkingLocationDegrees) {
                 if (self.redirectCounter == 0) {
-                    MapScreen.successTop()
+                    DispatchQueue.main.async {
+                        MapScreen.successTop()
+                        print("Spot assigned!")
+                    }
                 } else {
-                    MapScreen.warningTop()
+                    DispatchQueue.main.async {
+                        MapScreen.warningTop()
+                        print("Spot reassigned!")
+                    }
                 }
+                // Update in-app route
                 self.parkingLocationDegrees = responseArray
+                self.parkingCoordinate2D = CLLocationCoordinate2DMake(self.parkingLocationDegrees[0], self.parkingLocationDegrees[1])
+                DispatchQueue.main.async { self.getDirections(destinationCoordinate2D: self.parkingCoordinate2D) }
+                
                 self.nullCount = 0
                 self.redirectCounter += 1
-                print("Tracked Changes")
-                print("Spot reassigned!")
             } else {
                 self.nullCount = 0
                 print("Blocked")
             }
-            
-            // Update in-app route
-            print("Check it out! I've got latitude:", NSString(format: "%.10f", (self.parkingLocationDegrees)[0]), "longitude:", NSString(format: "%.10f", (self.parkingLocationDegrees)[1]))
-            self.parkingCoordinate2D = CLLocationCoordinate2DMake(self.parkingLocationDegrees[0], self.parkingLocationDegrees[1])
-            self.getDirections(destinationCoordinate2D: self.parkingCoordinate2D)
-            
+//            print("Check it out! I've got latitude:", NSString(format: "%.10f", (self.parkingLocationDegrees)[0]), "longitude:", NSString(format: "%.10f", (self.parkingLocationDegrees)[1]))
             }.resume()
     }
     
     
     func scheduledTimerWithTimeInterval(){
         // Scheduling timer to Call the function "updateCounting" with the interval of 1 seconds
-        self.timer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.getAssignedSpot), userInfo: nil, repeats: true)
+        self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.getAssignedSpot), userInfo: nil, repeats: true)
     }
     
     func fetchParkingData(destinationX: Double, destinationY: Double, price: Int, eDistance: Double, currentX: Double, currentY: Double) {
@@ -406,7 +414,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         let jsonData = try? JSONSerialization.data(withJSONObject: json)
         
         // create post request
-        let url = URL(string: "http://192.168.3.6:8000/api/create-driver")!
+        let url = URL(string: "http://10.209.13.213:8000/api/create-driver")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
@@ -430,41 +438,6 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         }
         
         task.resume()
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-//        let url = URL(string: "http://10.20.64.21:8080/\(destinationX)/\(destinationY)/\(price)/\(eDistance)/\(currentX)/\(currentY)")!
-//
-//        URLSession.shared.dataTask(with: url) { data, response, error
-//            in
-//            guard let data = data else {
-//                print(error?.localizedDescription ?? "Unknown error")
-//                return
-//            }
-//            let results = String(data: data, encoding: String.Encoding.utf8) ?? "Unable to parse JSON response.\n"
-//            self.parkingLocationDegrees[0] = Double(results.split(separator: ",")[0])!
-//            self.parkingLocationDegrees[1] = Double(results.split(separator: ",")[1])!
-//            self.waiting = 0
-//            }.resume()
     }
     
     static func failCentered() {
@@ -635,7 +608,9 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         }
         
         self.parkingLocationDegrees = [0.0, 0.0]    // reset parking coordinates
+        self.timer.invalidate() // invalidate timer
         self.redirectCounter = 0    // reset redirectCounter
+        self.nullCount = 0
         
 //        MapScreen.successCentered()
 //        MapScreen.failCentered()
