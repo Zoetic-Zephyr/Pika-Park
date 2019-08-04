@@ -331,6 +331,29 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         }
     }
     
+    func quitQueue(){
+        let url = URL(string: "http://10.209.13.213:8000/api/drivers/\(self.userId)")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                print(error?.localizedDescription ?? "No data")
+                return
+            }
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
+                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                print("response = \(String(describing: response))")
+                return
+            }
+            let results = String(data: data, encoding: String.Encoding.utf8) ?? "Unable to parse JSON response.\n"
+            print(results)
+        }
+        
+        task.resume()
+    }
+    
     @objc func getAssignedSpot(){
         guard let userCoordinate2D = locationManager.location?.coordinate else {
             // inform user we don't have their current location
@@ -550,6 +573,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     }
     
     @IBAction func centerButtonTapped(_ sender: UIButton) {
+        self.quitQueue()
         sender.pulsate()    // pulse animation
         
         mapView.removeOverlays(mapView.overlays)
