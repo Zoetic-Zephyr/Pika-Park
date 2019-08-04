@@ -81,7 +81,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         checkLocationServices()
         viewStyling()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(quitQueue), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(userLogOut), name: UIApplication.willTerminateNotification, object: nil)
 
     }
     
@@ -334,7 +334,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         }
     }
     
-    @objc func quitQueue(){
+    func quitQueue(){
         let url = URL(string: "http://10.209.13.213:8000/api/drivers/\(self.userId)")!
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
@@ -471,6 +471,12 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         }
         
         task.resume()
+    }
+    
+    @ objc func userLogOut() {
+        quitQueue()
+        sleep(1)
+        print("Application will terminate!")
     }
     
     static func failCentered() {
