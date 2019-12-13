@@ -335,7 +335,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
     }
     
     func quitQueue(){
-        let url = URL(string: "http://10.209.13.213:8000/api/drivers/\(self.userId)")!
+        let url = URL(string: "http://10.209.13.5:8000/api/drivers/\(self.userId)")!
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -364,7 +364,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         }
         let currentX = Double(userCoordinate2D.latitude)
         let currentY = Double(userCoordinate2D.longitude)
-        let url = URL(string: "http://10.209.13.213:8000/api/drivers/\(self.userId)/\(currentY)/\(currentX)")!
+        let url = URL(string: "http://10.209.13.5:8000/api/drivers/\(self.userId)/\(currentY)/\(currentX)")!
         
         URLSession.shared.dataTask(with: url) { data, response, error
             in
@@ -447,7 +447,7 @@ class MapScreen: UIViewController, UISearchBarDelegate {
         let jsonData = try? JSONSerialization.data(withJSONObject: json)
         
         // create post request
-        let url = URL(string: "http://10.209.13.213:8000/api/create-driver")!
+        let url = URL(string: "http://10.209.13.5:8000/api/create-driver")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
